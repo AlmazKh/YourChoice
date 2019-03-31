@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">YourChoice</string>
+    <string name="main_logo">logo</string>
+    <string name="login_hint_et">User name</string>
+    <string name="password_hint_et">Password</string>
+    <string name="please_sign_in_tv">Please sign in</string>
+    <string name="sign_in_with_facebook_btn">Sign in with Facebook</string>
+    <string name="sign_in_with_google_btn">Sign in with Google</string>
+    <string name="web_client_id">290055398849-tnkdl4feh96242qb8189omeb1808o16l.apps.googleusercontent.com</string>
 </resources>

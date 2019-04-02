@@ -32,6 +32,10 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     @InjectPresenter
     lateinit var loginPresenter: LoginActivityPresenter
 
+    lateinit var gso: GoogleSignInOptions
+
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+
     /*@ProvidePresenter
     fun provideLoginActivityPresenter() = loginPresenter
 */
@@ -39,12 +43,18 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
         init()
+
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
     private fun init() {
         injectDependency()
         loginPresenter.init(this)
-        google_sign_in_btn.setOnClickListener { v -> loginPresenter.onSignInClick() }
+        google_sign_in_btn.setOnClickListener { loginPresenter.onSignInClick() }
     }
 
     // TODO
@@ -58,7 +68,15 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     override fun signInGoogle(mGoogleSignInClient: GoogleSignInClient) {
 //        progressBar.setVisibility(View.VISIBLE)
-        loginPresenter.onSignInClick()
+//        loginPresenter.onSignInClick()
+        Log.d("MYLOG","IM HERE!!!!")
+        val signInIntent = mGoogleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun signInGoogle() {
+//        progressBar.setVisibility(View.VISIBLE)
+//        loginPresenter.onSignInClick()
         Log.d("MYLOG","IM HERE!!!!")
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)

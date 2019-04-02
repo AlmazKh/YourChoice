@@ -18,9 +18,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.login_activity.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.view.LoginView
+import javax.inject.Inject
+
 
 @InjectViewState
-class LoginActivityPresenter : MvpPresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener  {
+class LoginActivityPresenter
+@Inject constructor(): MvpPresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener {
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -38,8 +41,8 @@ class LoginActivityPresenter : MvpPresenter<LoginView>(), GoogleApiClient.OnConn
     }
 
     fun onSignInClick() {
-        Log.d("MYLOG",viewState.toString())
-        viewState.signInGoogle(mGoogleSignInClient)
+//        viewState.signInGoogle(mGoogleSignInClient)
+        viewState.signInGoogle()
         //mGoogleSignInClient.let { viewState.signInGoogle(it) }
     }
 

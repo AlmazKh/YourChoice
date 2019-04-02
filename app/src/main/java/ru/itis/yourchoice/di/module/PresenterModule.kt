@@ -8,6 +8,5 @@ import ru.itis.yourchoice.presenter.LoginActivityPresenter
 @Module
 class PresenterModule(private val context: Context) {
 
-    @Provides
-    fun provideLoginActivityPresenter(): LoginActivityPresenter = LoginActivityPresenter()
+
 }

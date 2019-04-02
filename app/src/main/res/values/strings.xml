@@ -6,5 +6,8 @@
     <string name="please_sign_in_tv">Please sign in</string>
     <string name="sign_in_with_facebook_btn">Sign in with Facebook</string>
     <string name="sign_in_with_google_btn">Sign in with Google</string>
+
     <string name="web_client_id">290055398849-tnkdl4feh96242qb8189omeb1808o16l.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">410577849737392</string> <string name="fb_login_protocol_scheme">fb410577849737392</string>
+
 </resources>

@@ -26,24 +26,13 @@ class LoginActivityPresenter
 @Inject constructor(): MvpPresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener {
 
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    fun init(context: Context) {
+    fun init() {
         mAuth = FirebaseAuth.getInstance()
-
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.web_client_id))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
     }
 
     fun onSignInClick() {
-//        viewState.signInGoogle(mGoogleSignInClient)
         viewState.signInGoogle()
-        //mGoogleSignInClient.let { viewState.signInGoogle(it) }
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {

@@ -28,7 +28,6 @@ import javax.inject.Inject
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
 
-    @Inject
     @InjectPresenter
     lateinit var loginPresenter: LoginActivityPresenter
 
@@ -36,9 +35,6 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    /*@ProvidePresenter
-    fun provideLoginActivityPresenter() = loginPresenter
-*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
@@ -53,7 +49,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     private fun init() {
         injectDependency()
-        loginPresenter.init(this)
+        loginPresenter.init()
         google_sign_in_btn.setOnClickListener { loginPresenter.onSignInClick() }
     }
 
@@ -101,7 +97,6 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     private fun injectDependency() {
         val activityComponent = DaggerActivityComponent.builder()
-            .presenterModule(PresenterModule(this))
             .build()
         activityComponent.inject(this)
     }

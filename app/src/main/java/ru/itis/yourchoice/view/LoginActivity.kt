@@ -1,30 +1,14 @@
 package ru.itis.yourchoice.view
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.util.Log
-import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.facebook.*
-import com.facebook.appevents.AppEventsLogger
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.*
-import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.login_activity.*
 import ru.itis.yourchoice.R
-import ru.itis.yourchoice.di.component.DaggerActivityComponent
-import ru.itis.yourchoice.di.module.PresenterModule
 import ru.itis.yourchoice.presenter.LoginActivityPresenter
-import javax.inject.Inject
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
 
@@ -48,32 +32,18 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     }
 
     private fun init() {
-        injectDependency()
         loginPresenter.init()
         google_sign_in_btn.setOnClickListener { loginPresenter.onSignInClick() }
     }
 
-    // TODO
-//    public override fun onStart() {
-//        super.onStart()
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = mAuth.currentUser
-//        updateUI(currentUser)
-//    }
-
-
-    override fun signInGoogle(mGoogleSignInClient: GoogleSignInClient) {
-//        progressBar.setVisibility(View.VISIBLE)
-//        loginPresenter.onSignInClick()
-        Log.d("MYLOG","IM HERE!!!!")
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        loginPresenter.checkAuthUser()
     }
 
+
     override fun signInGoogle() {
-//        progressBar.setVisibility(View.VISIBLE)
-//        loginPresenter.onSignInClick()
-        Log.d("MYLOG","IM HERE!!!!")
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -95,10 +65,9 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         }
     }
 
-    private fun injectDependency() {
-        val activityComponent = DaggerActivityComponent.builder()
-            .build()
-        activityComponent.inject(this)
+    override fun updateUI() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     companion object {

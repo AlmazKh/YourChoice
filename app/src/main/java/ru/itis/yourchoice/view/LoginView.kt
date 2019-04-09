@@ -7,6 +7,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface LoginView : MvpView {
-    fun signInGoogle(mGoogleSignInClient: GoogleSignInClient)
     fun signInGoogle()
+    fun updateUI()
 }

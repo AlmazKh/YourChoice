@@ -14,6 +14,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.login_activity.*
 import ru.itis.yourchoice.R
@@ -47,6 +48,7 @@ class LoginActivityPresenter
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MYLOG", "krasava")
+                    viewState.updateUI()
                     // Sign in success, update UI with the signed-in user's information
 //                    val user = mAuth.currentUser
 //                    updateUI(user)
@@ -60,23 +62,8 @@ class LoginActivityPresenter
             }
     }
 
-//    fun checkRequestCode(requestCode: Int, resultCode: Int, data: Intent?) {
-//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-//        if (requestCode == RC_SIGN_IN) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            try {
-//                // Google Sign In was successful, authenticate with Firebase
-//                val account = task.getResult(ApiException::class.java)
-//                firebaseAuthWithGoogle(account!!)
-//            } catch (e: ApiException) {
-//                // Google Sign In failed, update UI appropriately
-//                // ...
-//            }
-//        }
-//    }
-//
-//    companion object {
-//        internal val RC_SIGN_IN = 228
-//    }
-
+    fun checkAuthUser() {
+        val currentUser = mAuth.currentUser
+        currentUser?.let{ viewState.updateUI()}
+    }
 }

@@ -28,6 +28,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
             .build()
+
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 

@@ -16,21 +16,18 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.login_activity.*
 import ru.itis.yourchoice.R
+import ru.itis.yourchoice.core.interactors.LoginInteractor
 import ru.itis.yourchoice.view.LoginView
 import javax.inject.Inject
 
-
 @InjectViewState
 class LoginActivityPresenter
-@Inject constructor(): MvpPresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener {
-
-    private lateinit var mAuth: FirebaseAuth
-
-    fun init() {
-        mAuth = FirebaseAuth.getInstance()
-    }
+@Inject constructor(
+    private val loginInteractor: LoginInteractor
+) : MvpPresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener {
 
     fun onSignInClick() {
         viewState.signInGoogle()
@@ -41,10 +38,17 @@ class LoginActivityPresenter
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        mAuth.signInWithCredential(credential)
+        loginInteractor.login()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {
+                viewState.showError(it.message ?: "")
+                it.printStackTrace()
+            })
+        firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MYLOG", "krasava")

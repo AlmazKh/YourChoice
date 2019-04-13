@@ -9,4 +9,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 interface LoginView : MvpView {
     fun signInGoogle()
     fun updateUI()
+    fun signInSuccess()
+    fun showError(errorText: String)
 }

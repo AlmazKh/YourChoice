@@ -4,14 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.login_activity.*
 import ru.itis.yourchoice.R
+import ru.itis.yourchoice.di.component.DaggerActivityComponent
+import ru.itis.yourchoice.di.module.PresenterModule
 import ru.itis.yourchoice.presenter.LoginActivityPresenter
+import ru.itis.yourchoice.presenter.LoginActivityPresenter.Companion.RC_SIGN_IN
+import javax.inject.Inject
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
 
+    @Inject
     @InjectPresenter
     lateinit var loginPresenter: LoginActivityPresenter
 
@@ -19,7 +25,11 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
+    @ProvidePresenter
+    fun provideLoginActivityPresenter() = loginPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        injectDependency()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
         init()
@@ -33,7 +43,6 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     }
 
     private fun init() {
-        loginPresenter.init()
         google_sign_in_btn.setOnClickListener { loginPresenter.onSignInClick() }
     }
 
@@ -51,19 +60,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)
-                loginPresenter.firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                // ...
-            }
-        }
+        loginPresenter.onGoogleIntentResult(requestCode, data)
     }
 
     override fun updateUI() {
@@ -71,7 +68,20 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         startActivity(intent)
     }
 
-    companion object {
-        internal val RC_SIGN_IN = 228
+    private fun injectDependency() {
+        val activityComponent = DaggerActivityComponent.builder()
+            .presenterModule(PresenterModule())
+            .build()
+        activityComponent.inject(this)
     }
+
+    override fun signInSuccess() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showError(errorText: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
 }

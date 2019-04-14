@@ -1,4 +1,4 @@
-package ru.itis.yourchoice.di.component
+package ru.itis.yourchoice.di.module
 
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module

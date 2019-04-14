@@ -1,12 +1,19 @@
 package ru.itis.yourchoice.di.module
 
-import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
+import ru.itis.yourchoice.core.interactors.LoginInteractor
 import ru.itis.yourchoice.presenter.LoginActivityPresenter
+import javax.inject.Singleton
 
 @Module
-class PresenterModule(private val context: Context) {
+class PresenterModule {
 
-
+    @Singleton
+    @Provides
+    fun provideLoginActivityPresenter(
+       loginInteractor: LoginInteractor,
+       firebaseAuth: FirebaseAuth
+    ): LoginActivityPresenter = LoginActivityPresenter(loginInteractor, firebaseAuth)
 }

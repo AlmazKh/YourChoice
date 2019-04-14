@@ -1,5 +1,6 @@
 package ru.itis.yourchoice.core.interactors
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import io.reactivex.Completable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
@@ -10,8 +11,8 @@ class LoginInteractor @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    fun login(): Completable {
-        return userRepository.login()
+    fun login(acct: GoogleSignInAccount): Completable {
+        return userRepository.login(acct)
             .subscribeOn(Schedulers.io())
     }
 }

@@ -1,27 +1,18 @@
-package ru.itis.yourchoice.presenter
+package ru.itis.yourchoice.presenter.login
 
-import android.content.Context
 import android.content.Intent
-import android.support.design.widget.Snackbar
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.login_activity.*
-import ru.itis.yourchoice.R
 import ru.itis.yourchoice.core.interactors.LoginInteractor
-import ru.itis.yourchoice.view.LoginActivity
-import ru.itis.yourchoice.view.LoginView
+import ru.itis.yourchoice.view.login.LoginView
 import javax.inject.Inject
 
 @InjectViewState
@@ -31,7 +22,7 @@ class LoginActivityPresenter
     private val firebaseAuth: FirebaseAuth
 ) : MvpPresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener {
 
-    fun onSignInClick() {
+    fun onGoogleSignInClick() {
         viewState.signInGoogle()
     }
 
@@ -41,10 +32,13 @@ class LoginActivityPresenter
     }
 
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        loginInteractor.login(acct)
+        Log.d("MYLOG", acct.photoUrl.toString())
+        loginInteractor.loginGoogle(acct)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                loginInteractor.addUserToDb(acct.displayName, acct.email, null)
                 viewState.updateUI()
+                viewState.signInSuccess()
             }, {
                 viewState.showError(it.message ?: "Login error")
                 it.printStackTrace()
@@ -56,11 +50,11 @@ class LoginActivityPresenter
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // login_btn_background Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 account?.let { firebaseAuthWithGoogle(it) }
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
+                // login_btn_background Sign In failed, update UI appropriately
                 // ...
             }
         }
@@ -69,6 +63,10 @@ class LoginActivityPresenter
     fun checkAuthUser() {
         val currentUser = firebaseAuth.currentUser
         currentUser?.let{ viewState.updateUI()}
+    }
+
+    fun onPhoneSignInClick() {
+        viewState.signInPhone()
     }
 
     companion object {

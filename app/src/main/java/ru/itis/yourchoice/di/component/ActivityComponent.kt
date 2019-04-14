@@ -5,10 +5,8 @@ import ru.itis.yourchoice.di.module.AppModule
 import ru.itis.yourchoice.di.module.InteractorModule
 import ru.itis.yourchoice.di.module.PresenterModule
 import ru.itis.yourchoice.di.module.RepoModule
-import ru.itis.yourchoice.view.AddPostFragment
-import ru.itis.yourchoice.view.LoginActivity
-import ru.itis.yourchoice.view.MenuFragment
-import ru.itis.yourchoice.view.NewsFragment
+import ru.itis.yourchoice.view.login.LoginActivity
+import ru.itis.yourchoice.view.login.LoginWithPhoneDialog
 import javax.inject.Singleton
 
 @Component(
@@ -22,6 +20,7 @@ import javax.inject.Singleton
 @Singleton
 interface ActivityComponent {
     fun inject(loginActivity: LoginActivity)
+    fun inject(loginWithPhoneDialog: LoginWithPhoneDialog)
 //    fun inject(menuFragment: MenuFragment)
 //    fun inject(addPostFragment: AddPostFragment)
 //    fun inject(newsFragment: NewsFragment)

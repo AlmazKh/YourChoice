@@ -6,6 +6,7 @@
     <string name="please_sign_in_tv">Please sign in</string>
     <string name="sign_in_with_facebook_btn">Sign in with Facebook</string>
     <string name="sign_in_with_google_btn">Sign in with Google</string>
+    <string name="sign_in_with_phone_btn">Sign in with Phone</string>
 
     <string name="web_client_id">290055398849-tnkdl4feh96242qb8189omeb1808o16l.apps.googleusercontent.com</string>
     <string name="facebook_app_id">410577849737392</string>
@@ -16,5 +17,13 @@
     <string name="title_news">News</string>
     <string name="title_addpost">Add post</string>
     <string name="title_menu">Menu</string>
+    <string name="get_verification_code">Get verification code</string>
+    <string name="phone_hint">88005553535</string>
+    <string name="name_hint">Ivan</string>
+    <string name="write_code_hint">Write code from SMS here</string>
+    <string name="sign_in">Sign in</string>
+    <string name="phone_number_tv">Phone number</string>
+    <string name="user_name_tv">Write your name</string>
+    <string name="verification_code_tv">Verification code</string>
 
 </resources>

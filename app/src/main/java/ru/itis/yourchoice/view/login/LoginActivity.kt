@@ -1,18 +1,20 @@
-package ru.itis.yourchoice.view
+package ru.itis.yourchoice.view.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.gms.auth.api.signin.*
-import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.login_activity.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.di.component.DaggerActivityComponent
 import ru.itis.yourchoice.di.module.PresenterModule
-import ru.itis.yourchoice.presenter.LoginActivityPresenter
-import ru.itis.yourchoice.presenter.LoginActivityPresenter.Companion.RC_SIGN_IN
+import ru.itis.yourchoice.presenter.login.LoginActivityPresenter
+import ru.itis.yourchoice.presenter.login.LoginActivityPresenter.Companion.RC_SIGN_IN
+import ru.itis.yourchoice.view.MainActivity
 import javax.inject.Inject
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
@@ -43,7 +45,8 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     }
 
     private fun init() {
-        google_sign_in_btn.setOnClickListener { loginPresenter.onSignInClick() }
+        google_sign_in_btn.setOnClickListener { loginPresenter.onGoogleSignInClick() }
+        phone_sign_in_btn.setOnClickListener { loginPresenter.onPhoneSignInClick() }
     }
 
     public override fun onStart() {
@@ -52,11 +55,13 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         loginPresenter.checkAuthUser()
     }
 
-
     override fun signInGoogle() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
+
+    override fun signInPhone() {
+        LoginWithPhoneDialog.newInstance().show(supportFragmentManager, "loginWithPhoneDialog")    }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -76,11 +81,14 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     }
 
     override fun signInSuccess() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(getApplicationContext(),
+            "Login successful", Toast.LENGTH_LONG).show();
     }
 
     override fun showError(errorText: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d("MYLOG", errorText)
+        Toast.makeText(getApplicationContext(),
+            errorText, Toast.LENGTH_LONG).show();
     }
 
 

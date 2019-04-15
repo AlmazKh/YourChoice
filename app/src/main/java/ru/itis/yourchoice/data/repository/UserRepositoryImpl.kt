@@ -52,7 +52,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun addUserToDb(name: String?, email: String?, phone: Int?) {
+    override fun addUserToDb(name: String?, email: String?, phone: String?) {
         val userMap = HashMap<String, Any?>()
         userMap[USER_NAME] = name
         userMap[USER_EMAIL] = email

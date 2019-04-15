@@ -9,6 +9,6 @@ interface UserRepository {
 
     fun loginGoogle(acct: GoogleSignInAccount): Completable
     fun loginPhone(credential: PhoneAuthCredential): Completable
-    fun addUserToDb(name: String?, email: String?, phone: Int?)
+    fun addUserToDb(name: String?, email: String?, phone: String?)
 
 }

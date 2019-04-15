@@ -10,5 +10,6 @@ interface LoginWithPhoneView : MvpView {
     fun verifySignInCode()
     fun updateUI()
     fun signInSuccess()
+    fun codeIsSending()
     fun showError(errorText: String)
 }

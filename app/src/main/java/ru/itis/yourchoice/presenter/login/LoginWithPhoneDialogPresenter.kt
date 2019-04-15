@@ -29,6 +29,7 @@ class LoginWithPhoneDialogPresenter
     private lateinit var storedVerificationId: String
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var credential: PhoneAuthCredential
+    private lateinit var storedPhoneNumber: String
 
     fun sendVerificationCode(phoneNumber: String) {
         if(phoneNumber.isEmpty()) {
@@ -38,7 +39,7 @@ class LoginWithPhoneDialogPresenter
         if(phoneNumber.length < 10) {
             return
         }
-
+        storedPhoneNumber = phoneNumber
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,      // Phone number to verify
             60,               // Timeout duration
@@ -92,17 +93,17 @@ class LoginWithPhoneDialogPresenter
             // Save verification ID and resending token so we can use them later
             storedVerificationId = verificationId
             resendToken = token
-            Log.d("MYLOG", "presenter sendCode callback " + storedVerificationId)
-
+            viewState.codeIsSending()
             // ...
         }
     }
 
-    fun verifySignInCode(verificationCode: String){
+    fun verifySignInCode(verificationCode: String, userName: String){
         credential = PhoneAuthProvider.getCredential(storedVerificationId, verificationCode)
         loginInteractor.loginPhone(credential)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                loginInteractor.addUserToDb(userName, null, storedPhoneNumber)
                 viewState.updateUI()
                 viewState.signInSuccess()
             }, {

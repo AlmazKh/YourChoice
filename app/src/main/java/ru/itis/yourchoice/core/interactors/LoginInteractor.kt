@@ -22,7 +22,7 @@ class LoginInteractor @Inject constructor(
             .subscribeOn(Schedulers.io())
     }
 
-    fun addUserToDb(name: String?, email: String?, phone: Int?) {
+    fun addUserToDb(name: String?, email: String?, phone: String?) {
         userRepository.addUserToDb(name, email, phone)
     }
 }

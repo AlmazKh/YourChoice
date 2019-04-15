@@ -50,7 +50,7 @@ class LoginWithPhoneDialog : MvpAppCompatDialogFragment(), LoginWithPhoneView {
     }
 
     override fun verifySignInCode() {
-        loginPresenter.verifySignInCode(verification_code_et.text.toString())
+        loginPresenter.verifySignInCode(verification_code_et.text.toString(), user_name_et.text.toString())
     }
 
     private fun injectDependency() {
@@ -68,6 +68,11 @@ class LoginWithPhoneDialog : MvpAppCompatDialogFragment(), LoginWithPhoneView {
     override fun signInSuccess() {
         Toast.makeText(activity,
             "Login successful", Toast.LENGTH_LONG).show();
+    }
+
+    override fun codeIsSending() {
+        Toast.makeText(activity,
+            "Wait, your code is sending", Toast.LENGTH_LONG).show()
     }
 
     override fun showError(errorText: String) {

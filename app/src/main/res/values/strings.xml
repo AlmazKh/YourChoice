@@ -18,7 +18,7 @@
     <string name="title_addpost">Add post</string>
     <string name="title_menu">Menu</string>
     <string name="get_verification_code">Get verification code</string>
-    <string name="phone_hint">88005553535</string>
+    <string name="phone_hint">+78005553535</string>
     <string name="name_hint">Ivan</string>
     <string name="write_code_hint">Write code from SMS here</string>
     <string name="sign_in">Sign in</string>

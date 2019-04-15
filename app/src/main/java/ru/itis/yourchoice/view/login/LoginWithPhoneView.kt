@@ -8,4 +8,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 interface LoginWithPhoneView : MvpView {
     fun sendVerificationCode()
     fun verifySignInCode()
+    fun updateUI()
+    fun signInSuccess()
+    fun showError(errorText: String)
 }

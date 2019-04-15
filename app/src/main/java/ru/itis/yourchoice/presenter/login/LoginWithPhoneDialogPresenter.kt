@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.itis.yourchoice.core.interactors.LoginInteractor
 import ru.itis.yourchoice.view.login.LoginView
 import ru.itis.yourchoice.view.login.LoginWithPhoneView
@@ -44,6 +45,7 @@ class LoginWithPhoneDialogPresenter
             TimeUnit.SECONDS, // Unit of timeout
             TaskExecutors.MAIN_THREAD,  // Activity (for callback binding)
             callbacks) // OnVerificationStateChangedCallbacks
+        Log.d("MYLOG", "presenter sendCode")
 
     }
 
@@ -90,13 +92,22 @@ class LoginWithPhoneDialogPresenter
             // Save verification ID and resending token so we can use them later
             storedVerificationId = verificationId
             resendToken = token
+            Log.d("MYLOG", "presenter sendCode callback " + storedVerificationId)
 
             // ...
         }
     }
 
     fun verifySignInCode(verificationCode: String){
-        credential = PhoneAuthProvider.getCredential(storedVerificationId, verificationCode);
-        loginInteractor.loginPhone(credential);
+        credential = PhoneAuthProvider.getCredential(storedVerificationId, verificationCode)
+        loginInteractor.loginPhone(credential)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                viewState.updateUI()
+                viewState.signInSuccess()
+            }, {
+                viewState.showError(it.message ?: "Login error")
+                it.printStackTrace()
+            })
     }
 }

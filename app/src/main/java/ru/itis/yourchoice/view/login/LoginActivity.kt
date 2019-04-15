@@ -90,6 +90,4 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         Toast.makeText(getApplicationContext(),
             errorText, Toast.LENGTH_LONG).show();
     }
-
-
 }

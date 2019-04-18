@@ -45,7 +45,7 @@ class LoginWithPhoneDialog : MvpAppCompatDialogFragment(), LoginWithPhoneView {
     }
 
     override fun sendVerificationCode() {
-        loginPresenter.sendVerificationCode(phone_et.text.toString())
+        loginPresenter.sendVerificationCode(phone_et.text.toString(), user_name_et.text.toString())
 
     }
 

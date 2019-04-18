@@ -13,5 +13,4 @@ interface RepoModule {
     @Binds
     @Singleton
     fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
-
 }

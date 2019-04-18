@@ -62,7 +62,7 @@ class LoginActivityPresenter
 
     fun checkAuthUser() {
         val currentUser = firebaseAuth.currentUser
-        currentUser?.let{ viewState.updateUI()}
+        currentUser?.let { viewState.updateUI() }
     }
 
     fun onPhoneSignInClick() {

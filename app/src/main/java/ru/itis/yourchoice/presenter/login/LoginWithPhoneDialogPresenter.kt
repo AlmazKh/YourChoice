@@ -9,11 +9,9 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.*
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import ru.itis.yourchoice.core.interactors.LoginInteractor
 import ru.itis.yourchoice.view.login.LoginView
 import ru.itis.yourchoice.view.login.LoginWithPhoneView
@@ -27,80 +25,32 @@ class LoginWithPhoneDialogPresenter
 ) : MvpPresenter<LoginWithPhoneView>() {
 
     private lateinit var storedVerificationId: String
-    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
-    private lateinit var credential: PhoneAuthCredential
     private lateinit var storedPhoneNumber: String
 
-    fun sendVerificationCode(phoneNumber: String) {
-        if(phoneNumber.isEmpty()) {
+    fun sendVerificationCode(phoneNumber: String, userName: String) {
+        if (phoneNumber.isEmpty()) {
             return
         }
+        if (phoneNumber.length < 10) {
+            return
+        }
+        loginInteractor.sendVerificationCode(phoneNumber)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = {
+                viewState.codeIsSending()
+                storedVerificationId = it
+                storedPhoneNumber = phoneNumber
+            }, onComplete = {
+                viewState.updateUI()
+                viewState.signInSuccess()
+                Log.d("MYLOG", "presenter sendCode ${loginInteractor.getCurrentUser()}")
+            }, onError = {})
 
-        if(phoneNumber.length < 10) {
-            return
-        }
-        storedPhoneNumber = phoneNumber
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-            phoneNumber,      // Phone number to verify
-            60,               // Timeout duration
-            TimeUnit.SECONDS, // Unit of timeout
-            TaskExecutors.MAIN_THREAD,  // Activity (for callback binding)
-            callbacks) // OnVerificationStateChangedCallbacks
         Log.d("MYLOG", "presenter sendCode")
-
     }
 
-    private var callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            // This callback will be invoked in two situations:
-            // 1 - Instant verification. In some cases the phone number can be instantly
-            //     verified without needing to send or enter a verification code.
-            // 2 - Auto-retrieval. On some devices Google Play services can automatically
-            //     detect the incoming verification SMS and perform verification without
-            //     user action.
-            Log.d(ContentValues.TAG, "onVerificationCompleted:$credential")
-
-            loginInteractor.loginPhone(credential)
-        }
-
-        override fun onVerificationFailed(e: FirebaseException) {
-            // This callback is invoked in an invalid request for verification is made,
-            // for instance if the the phone number format is not valid.
-            Log.w(ContentValues.TAG, "onVerificationFailed", e)
-
-            if (e is FirebaseAuthInvalidCredentialsException) {
-                // Invalid request
-                // ...
-            } else if (e is FirebaseTooManyRequestsException) {
-                // The SMS quota for the project has been exceeded
-                // ...
-            }
-
-            // Show a message and update the UI
-            // ...
-        }
-
-        override fun onCodeSent(
-            verificationId: String?,
-            token: PhoneAuthProvider.ForceResendingToken
-        ) {
-            // The SMS verification code has been sent to the provided phone number, we
-            // now need to ask the user to enter the code and then construct a credential
-            // by combining the code with a verification ID.
-            Log.d(ContentValues.TAG, "onCodeSent:" + verificationId!!)
-
-            // Save verification ID and resending token so we can use them later
-            storedVerificationId = verificationId
-            resendToken = token
-            viewState.codeIsSending()
-            // ...
-        }
-    }
-
-    fun verifySignInCode(verificationCode: String, userName: String){
-        credential = PhoneAuthProvider.getCredential(storedVerificationId, verificationCode)
-        loginInteractor.loginPhone(credential)
+    fun verifySignInCode(verificationCode: String, userName: String) {
+        loginInteractor.loginPhone(storedVerificationId, verificationCode)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 loginInteractor.addUserToDb(userName, null, storedPhoneNumber)
@@ -110,5 +60,9 @@ class LoginWithPhoneDialogPresenter
                 viewState.showError(it.message ?: "Login error")
                 it.printStackTrace()
             })
+    }
+
+    fun getCurrentUser(): FirebaseUser? {
+        return loginInteractor.getCurrentUser()
     }
 }

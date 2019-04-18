@@ -18,6 +18,8 @@ import ru.itis.yourchoice.view.login.LoginWithPhoneView
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+const val PHONE_NUMBER_LENGHT = 10
+
 @InjectViewState
 class LoginWithPhoneDialogPresenter
 @Inject constructor(
@@ -31,7 +33,7 @@ class LoginWithPhoneDialogPresenter
         if (phoneNumber.isEmpty()) {
             return
         }
-        if (phoneNumber.length < 10) {
+        if (phoneNumber.length < PHONE_NUMBER_LENGHT) {
             return
         }
         loginInteractor.sendVerificationCode(phoneNumber)
@@ -62,7 +64,5 @@ class LoginWithPhoneDialogPresenter
             })
     }
 
-    fun getCurrentUser(): FirebaseUser? {
-        return loginInteractor.getCurrentUser()
-    }
+    fun getCurrentUser(): FirebaseUser? = loginInteractor.getCurrentUser()
 }

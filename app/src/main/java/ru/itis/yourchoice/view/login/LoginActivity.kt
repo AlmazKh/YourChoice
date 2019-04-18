@@ -45,8 +45,8 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     }
 
     private fun init() {
-        google_sign_in_btn.setOnClickListener { loginPresenter.onGoogleSignInClick() }
-        phone_sign_in_btn.setOnClickListener { loginPresenter.onPhoneSignInClick() }
+        btn_google_sign_in.setOnClickListener { loginPresenter.onGoogleSignInClick() }
+        btn_phone_sign_in.setOnClickListener { loginPresenter.onPhoneSignInClick() }
     }
 
     public override fun onStart() {

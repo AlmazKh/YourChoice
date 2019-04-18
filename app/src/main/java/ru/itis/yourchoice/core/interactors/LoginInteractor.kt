@@ -14,10 +14,10 @@ class LoginInteractor
     private val userRepository: UserRepository
 ) {
 
-    fun loginGoogle(acct: GoogleSignInAccount): Completable {
-        return userRepository.loginGoogle(acct)
-            .subscribeOn(Schedulers.io())
-    }
+    fun loginGoogle(acct: GoogleSignInAccount): Completable =
+        userRepository.loginGoogle(acct)
+        .subscribeOn(Schedulers.io())
+
 
     fun loginPhone(storedVerificationId: String, verificationCode: String): Completable {
         return userRepository.loginPhone(
@@ -32,11 +32,9 @@ class LoginInteractor
         userRepository.sendVerificationCode(phoneNumber)
             .subscribeOn(Schedulers.io())
 
-    fun addUserToDb(name: String?, email: String?, phone: String?) {
+    fun addUserToDb(name: String?, email: String?, phone: String?) =
         userRepository.addUserToDb(name, email, phone)
-    }
 
-    fun getCurrentUser(): FirebaseUser? {
-        return userRepository.getCurrentUser()
-    }
+
+    fun getCurrentUser(): FirebaseUser? = userRepository.getCurrentUser()
 }

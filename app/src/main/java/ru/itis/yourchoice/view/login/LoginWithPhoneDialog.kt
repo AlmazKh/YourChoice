@@ -1,6 +1,5 @@
 package ru.itis.yourchoice.view.login
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -34,8 +33,8 @@ class LoginWithPhoneDialog : MvpAppCompatDialogFragment(), LoginWithPhoneView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog.setTitle("Sign in with phone")
         val v = inflater.inflate(R.layout.login_with_phone_dialog, null)
-        v.get_verification_code_btn.setOnClickListener{sendVerificationCode()}
-        v.sign_in_btn.setOnClickListener{verifySignInCode()}
+        v.btn_get_verification_code.setOnClickListener{sendVerificationCode()}
+        v.btn_sign_in.setOnClickListener{verifySignInCode()}
         return v
     }
 
@@ -45,12 +44,12 @@ class LoginWithPhoneDialog : MvpAppCompatDialogFragment(), LoginWithPhoneView {
     }
 
     override fun sendVerificationCode() {
-        loginPresenter.sendVerificationCode(phone_et.text.toString(), user_name_et.text.toString())
+        loginPresenter.sendVerificationCode(et_phone.text.toString(), et_user_name.text.toString())
 
     }
 
     override fun verifySignInCode() {
-        loginPresenter.verifySignInCode(verification_code_et.text.toString(), user_name_et.text.toString())
+        loginPresenter.verifySignInCode(et_verification_code.text.toString(), et_user_name.text.toString())
     }
 
     private fun injectDependency() {

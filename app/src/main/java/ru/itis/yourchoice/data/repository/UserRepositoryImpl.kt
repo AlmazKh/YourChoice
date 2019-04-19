@@ -80,22 +80,7 @@ class UserRepositoryImpl @Inject constructor(
                     }
 
                     override fun onVerificationFailed(e: FirebaseException) {
-                        // This callback is invoked in an invalid request for verification is made,
-                        // for instance if the the phone number format is not valid.
-                        Log.w(ContentValues.TAG, "onVerificationFailed", e)
-
-                        if (e is FirebaseAuthInvalidCredentialsException) {
-                            // Invalid request
-                            // ...
-                        } else if (e is FirebaseTooManyRequestsException) {
-                            // The SMS quota for the project has been exceeded
-                            // ...
-                        }
-
-                        emitter.onError(java.lang.Exception("ALL BAD"))
-
-                        // Show a message and update the UI
-                        // ...
+                        emitter.onError(e)
                     }
 
                     override fun onCodeSent(
@@ -115,9 +100,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCurrentUser() : FirebaseUser?{
-        return firebaseAuth.currentUser
-    }
+    override fun getCurrentUser() : FirebaseUser? = firebaseAuth.currentUser
 
     override fun addUserToDb(name: String?, email: String?, phone: String?) {
         val userMap = HashMap<String, Any?>()

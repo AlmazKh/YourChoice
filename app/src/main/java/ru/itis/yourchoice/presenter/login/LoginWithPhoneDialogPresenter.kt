@@ -46,7 +46,7 @@ class LoginWithPhoneDialogPresenter
                 viewState.updateUI()
                 viewState.signInSuccess()
                 Log.d("MYLOG", "presenter sendCode ${loginInteractor.getCurrentUser()}")
-            }, onError = {})
+            }, onError = {viewState.showError(it.toString())})
 
         Log.d("MYLOG", "presenter sendCode")
     }

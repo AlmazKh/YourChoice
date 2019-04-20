@@ -3,8 +3,12 @@ package ru.itis.yourchoice.view
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.add_post_fragment.*
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.news_fragment.*
 import ru.itis.yourchoice.R
+import ru.itis.yourchoice.view.addpost.AddPostFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,15 +16,15 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         when (item.itemId) {
             R.id.navigation_news -> {
-                fragmentTransaction.replace(R.id.main_container, NewsFragment.newInstance())
+                fragmentTransaction.replace(R.id.main_container, NewsFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_addpost -> {
-                fragmentTransaction.replace(R.id.main_container, AddPostFragment.newInstance())
+                fragmentTransaction.replace(R.id.main_container, AddPostFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_menu -> {
-                fragmentTransaction.replace(R.id.main_container, MenuFragment.newInstance())
+                fragmentTransaction.replace(R.id.main_container, MenuFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -35,5 +39,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false);
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 }

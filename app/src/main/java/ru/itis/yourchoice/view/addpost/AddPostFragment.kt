@@ -6,15 +6,18 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatFragment
 import ru.itis.yourchoice.R
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.facebook.FacebookSdk.getApplicationContext
 import kotlinx.android.synthetic.main.add_post_fragment.*
 import kotlinx.android.synthetic.main.main_activity.*
 import ru.itis.yourchoice.di.component.DaggerActivityComponent
 import ru.itis.yourchoice.di.module.PresenterModule
 import ru.itis.yourchoice.presenter.addpost.AddPostPresenter
+import ru.itis.yourchoice.view.MainActivity
 import javax.inject.Inject
 
 class AddPostFragment : MvpAppCompatFragment(), AddPostView {
@@ -55,7 +58,6 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.addpost_toolbar, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -83,6 +85,14 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         select_subcategory_spinner.setAdapter(adapter)
     }
+
+    override fun postAddedSuccessful() =
+        Toast.makeText(getApplicationContext(),
+            "Post added successful", Toast.LENGTH_LONG).show()
+
+    override fun showError(errorText: String) =
+        Toast.makeText(getApplicationContext(),
+            errorText, Toast.LENGTH_LONG).show()
 
     private fun injectDependency() {
         val activityComponent = DaggerActivityComponent.builder()

@@ -1,6 +1,7 @@
 package ru.itis.yourchoice.core.interactors
 
 import com.google.firebase.firestore.QuerySnapshot
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.AddPostRepository
@@ -19,17 +20,12 @@ class AddPostInteractor @Inject constructor(
     fun getMainCategories () : ArrayList<String> = CATEGORIES
 
     fun getCategories (category: Any?) : Maybe<MutableList<Category>> {
-//        if (category is String) {
         categoryId = CATEGORIES.indexOf(category).toInt() + 1
              return addPostRepository.getCategories(categoryId)
                         .subscribeOn(Schedulers.io())
-//        } else {
-//            return throw NumberFormatException()
-//        }
     }
 
-    fun addPostIntoDb (subcategory: String, description: String) {
+    fun addPostIntoDb (subcategory: String, description: String) : Completable =
         addPostRepository.addPostIntoDb(categoryId, subcategory, description)
-    }
+            .subscribeOn(Schedulers.io())
 }
-

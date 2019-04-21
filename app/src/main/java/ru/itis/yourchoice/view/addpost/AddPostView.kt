@@ -6,4 +6,6 @@ import ru.itis.yourchoice.core.model.Category
 
 interface AddPostView : MvpView {
     fun updateUI(categories: List<String>)
+    fun postAddedSuccessful()
+    fun showError(errorText: String)
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import ru.itis.yourchoice.core.interfaces.AddPostRepository
 import ru.itis.yourchoice.core.model.Category
@@ -35,7 +36,6 @@ class AddPostRepositoryImpl
                 .addOnSuccessListener { documents ->
                     val list: ArrayList<Category> = ArrayList()
                     for (document in documents) {
-//                        list.put(document.data["name"].toString())
                         list.add(document.toObject(Category::class.java))
                         Log.d(TAG, "${document.id} => ${document.data}")
                     }
@@ -48,18 +48,22 @@ class AddPostRepositoryImpl
         }
     }
 
-    override fun addPostIntoDb(category: Int, subcategory: String, description: String) {
+    override fun addPostIntoDb(category: Int, subcategory: String, description: String) : Completable {
         val postMap = HashMap<String, Any?>()
         postMap[OWNER_ID] = firebaseAuth.currentUser?.uid
         postMap[MAIN_CATEGORY_ID] = category
         postMap[CATEGOGY_NAME] = subcategory
         postMap[POST_DESCRIPTION] = description
-        db.collection(POSTS)
-            .add(postMap)
-            .addOnSuccessListener {
-                Log.d("MYLOG", it.toString())
-            }.addOnFailureListener {
-                Log.d("MYLOG", it.message)
-            }
+        return Completable.create {emitter ->
+            db.collection(POSTS)
+                .add(postMap)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(task.exception ?: Exception(""))
+                    }
+                }
+        }
     }
 }

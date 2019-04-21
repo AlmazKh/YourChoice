@@ -20,7 +20,6 @@ class AddPostPresenter
         addPostInteractor.getCategories(mainCategory)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-//                Log.d(ContentValues.TAG, "GIVEN GATA ${it.get(0).documents} => ${it.get(0).documents.get(0).data}")
                 val list: ArrayList<String> = ArrayList()
                 it.forEach { list.add(it.name) }
                 viewState.updateUI(list)
@@ -31,6 +30,11 @@ class AddPostPresenter
 
     fun addPost(category: String, description: String) {
         addPostInteractor.addPostIntoDb(category, description)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                viewState.postAddedSuccessful()
+            }, {
+                viewState.showError(it.message ?: "Post adding error. Please, try again")
+            })
     }
-
 }

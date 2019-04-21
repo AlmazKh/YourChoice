@@ -26,8 +26,6 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
     @ProvidePresenter
     fun provideAddPostPresenter() = addPostPresenter
 
-//    var categories = arrayListOf("Films", "Series", "Events", "Books")
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         injectDependency()
@@ -84,15 +82,6 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         select_subcategory_spinner.setAdapter(adapter)
-    }
-
-
-    override fun getCategories(mainCategory: Int) {
-        TODO("not implemented") //ge
-    }
-
-    override fun addPost(mainCategory: Int, category: String, description: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun injectDependency() {

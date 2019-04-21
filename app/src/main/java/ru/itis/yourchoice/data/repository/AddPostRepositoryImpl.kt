@@ -10,7 +10,7 @@ import ru.itis.yourchoice.core.model.Category
 import javax.inject.Inject
 
 private const val OWNER_ID = "owner_id"
-private const val MAIN_CATEGORY_ID = "id"
+private const val MAIN_CATEGORY_ID = "main_category"
 private const val CATEGOGY_NAME = "name"
 private const val POST_DESCRIPTION = "description"
 private const val POSTS = "posts"

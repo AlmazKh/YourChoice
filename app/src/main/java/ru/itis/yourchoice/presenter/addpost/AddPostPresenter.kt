@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 @InjectViewState
 class AddPostPresenter
-//    @Inject constructor(): MvpPresenter<AddPostView>() {
 @Inject constructor(
     private val addPostInteractor: AddPostInteractor
 ) : MvpPresenter<AddPostView>() {
@@ -30,8 +29,8 @@ class AddPostPresenter
             })
     }
 
-    fun addPost(category: String, description: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun addPost(category: String, description: String) {
+        addPostInteractor.addPostIntoDb(category, description)
     }
 
 }

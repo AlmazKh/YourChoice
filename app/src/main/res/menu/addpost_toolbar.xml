@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/addpost_approve"
+            android:icon="@drawable/addpost_approve_btn"
+            android:title="@string/title_addpost"
+            app:showAsAction="always"/>
+
+    <item
+            android:id="@+id/addpost_delet"
+            android:icon="@drawable/addpost_delete_btn"
+            android:title="@string/title_delete_post"
+            app:showAsAction="always"/>
+</menu>

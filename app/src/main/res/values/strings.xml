@@ -25,5 +25,6 @@
     <string name="phone_number_tv">Phone number</string>
     <string name="user_name_tv">Write your name</string>
     <string name="verification_code_tv">Verification code</string>
+    <string name="title_delete_post">delete post</string>
 
 </resources>

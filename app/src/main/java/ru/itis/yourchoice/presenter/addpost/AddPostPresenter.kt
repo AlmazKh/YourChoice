@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.itis.yourchoice.core.interactors.AddPostInteractor
+import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.view.addpost.AddPostView
 import javax.inject.Inject
 
@@ -28,8 +29,12 @@ class AddPostPresenter
             })
     }
 
-    fun addPost(category: String, description: String) {
-        addPostInteractor.addPostIntoDb(category, description)
+    fun addPost(mainCategory: Any, category: String, description: String) {
+        addPostInteractor.addPostIntoDb(
+            mainCategory,
+            category,
+            description
+        )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 viewState.postAddedSuccessful()

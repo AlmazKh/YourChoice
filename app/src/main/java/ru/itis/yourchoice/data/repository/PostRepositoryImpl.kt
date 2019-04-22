@@ -1,13 +1,9 @@
 package ru.itis.yourchoice.data.repository
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
-import io.reactivex.Maybe
-import ru.itis.yourchoice.core.interfaces.AddPostRepository
-import ru.itis.yourchoice.core.model.Category
+import ru.itis.yourchoice.core.interfaces.PostRepository
 import javax.inject.Inject
 
 private const val OWNER_ID = "owner_id"
@@ -23,38 +19,18 @@ private const val POSTS = "posts"
     4 = books
     */
 
-class AddPostRepositoryImpl
+class PostRepositoryImpl
 @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val db: FirebaseFirestore
-) : AddPostRepository {
-    override fun getCategories(category: Int): Maybe<MutableList<Category>> {
-        return Maybe.create { emitter ->
-            db.collection("categories")
-                .whereEqualTo("id", category)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val list: ArrayList<Category> = ArrayList()
-                    for (document in documents) {
-                        list.add(document.toObject(Category::class.java))
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                    }
-                    emitter.onSuccess(list)
-                }
-                .addOnFailureListener { exception ->
-                    emitter.onError(exception)
-                    Log.w(TAG, "Error getting documents: ", exception)
-                }
-        }
-    }
-
+): PostRepository {
     override fun addPostIntoDb(category: Int, subcategory: String, description: String) : Completable {
         val postMap = HashMap<String, Any?>()
         postMap[OWNER_ID] = firebaseAuth.currentUser?.uid
         postMap[MAIN_CATEGORY_ID] = category
         postMap[CATEGOGY_NAME] = subcategory
         postMap[POST_DESCRIPTION] = description
-        return Completable.create {emitter ->
+        return Completable.create { emitter ->
             db.collection(POSTS)
                 .add(postMap)
                 .addOnCompleteListener { task ->

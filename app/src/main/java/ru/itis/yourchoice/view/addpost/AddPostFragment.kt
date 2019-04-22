@@ -67,8 +67,9 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
         when (item?.getItemId()) {
             R.id.addpost_approve -> {
                 addPostPresenter.addPost(
-                        select_subcategory_spinner.selectedItem.toString(),
-                        et_description.text.toString()
+                    select_category_spinner.selectedItem.toString(),
+                    select_subcategory_spinner.selectedItem.toString(),
+                    et_description.text.toString()
                 )
                 return true
             }

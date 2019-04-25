@@ -94,7 +94,7 @@ class UserRepositoryImpl
                         // The SMS verification code has been sent to the provided phone number, we
                         // now need to ask the user to enter the code and then construct a credential
                         // by combining the code with a verification ID.
-                        Log.d(ContentValues.TAG, "onCodeSent:" + verificationId!!)
+                        Log.d("MYLOG", "onCodeSent:" + verificationId!!)
 
                         // Save verification ID and resending token so we can use them later
                         emitter.onSuccess(verificationId)

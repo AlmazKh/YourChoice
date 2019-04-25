@@ -27,16 +27,16 @@ class LoginWithPhoneDialogPresenter(
         }
         loginInteractor.sendVerificationCode(phoneNumber)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(onSuccess = {
+            .subscribe({
                 view?.codeIsSending()
                 storedVerificationId = it
                 storedPhoneNumber = phoneNumber
-            }, onComplete = {
-                view?.signInSuccess()
-            }, onError = {
+            }, {
                 view?.showError(it.toString())
+            }, {
+                Log.d("MYLOG", "success send verif")
+                view?.signInSuccess()
             })
-
         Log.d("MYLOG", "presenter sendCode")
     }
 
@@ -56,6 +56,7 @@ class LoginWithPhoneDialogPresenter(
             loginInteractor.loginWithPhone(storedVerificationId!!, verificationCode, userName, phoneNumber)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    Log.d("MYLOG", "success verif")
                     view?.signInSuccess()
                 }, {
                     view?.showError(it.message ?: "Login error")

@@ -7,6 +7,12 @@
     <string name="sign_in_with_facebook_btn">Sign in with Facebook</string>
     <string name="sign_in_with_google_btn">Sign in with Google</string>
     <string name="sign_in_with_phone_btn">Sign in with Phone</string>
+    <string name="login_success">Login successful</string>
+    <string name="verify_code_sending">Wait, your code is sending</string>
+    <string name="err_phone_format">Write correct phone number</string>
+    <string name="err_verify_code">Error! Get code first, then write into the field</string>
+    <string name="err_phones_mismatch">Stored and wited phone numbers mismatch</string>
+
 
     <string name="web_client_id">290055398849-tnkdl4feh96242qb8189omeb1808o16l.apps.googleusercontent.com</string>
     <string name="facebook_app_id">410577849737392</string>

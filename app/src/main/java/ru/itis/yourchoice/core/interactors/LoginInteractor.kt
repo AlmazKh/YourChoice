@@ -1,8 +1,6 @@
 package ru.itis.yourchoice.core.interactors
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
@@ -14,27 +12,19 @@ class LoginInteractor
     private val userRepository: UserRepository
 ) {
 
-    fun loginGoogle(acct: GoogleSignInAccount): Completable =
-        userRepository.loginGoogle(acct)
-        .subscribeOn(Schedulers.io())
+    fun loginWithGoogle(acct: GoogleSignInAccount): Completable =
+        userRepository.loginWithGoogle(acct)
+            .subscribeOn(Schedulers.io())
 
 
-    fun loginPhone(storedVerificationId: String, verificationCode: String): Completable {
-        return userRepository.loginPhone(
-            PhoneAuthProvider.getCredential(
-                storedVerificationId,
-                verificationCode
-            )
-        ).subscribeOn(Schedulers.io())
+    fun loginWithPhone(storedVerificationId: String, verificationCode: String, userName: String, phone: String): Completable {
+        return userRepository.loginWithPhone(storedVerificationId, verificationCode, userName, phone)
+            .subscribeOn(Schedulers.io())
     }
 
     fun sendVerificationCode(phoneNumber: String): Maybe<String> =
         userRepository.sendVerificationCode(phoneNumber)
             .subscribeOn(Schedulers.io())
 
-    fun addUserToDb(name: String?, email: String?, phone: String?) =
-        userRepository.addUserToDb(name, email, phone)
-
-
-    fun getCurrentUser(): FirebaseUser? = userRepository.getCurrentUser()
+    fun checkAuthUser(): Boolean = userRepository.checkAuthUser()
 }

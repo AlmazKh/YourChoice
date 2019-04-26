@@ -23,5 +23,4 @@ interface RepoModule {
     @Binds
     @Singleton
     fun bindCategoryRepository(categoryRepositoryImpl: CategoryRepositoryImpl): CategoryRepository
-
 }

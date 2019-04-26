@@ -1,28 +1,30 @@
 package ru.itis.yourchoice.core.interactors
 
-import android.net.Uri
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.PhoneAuthCredential
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.UserRepository
 import javax.inject.Inject
 
-class LoginInteractor @Inject constructor(
+class LoginInteractor
+@Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    fun loginGoogle(acct: GoogleSignInAccount): Completable {
-        return userRepository.loginGoogle(acct)
+    fun loginWithGoogle(acct: GoogleSignInAccount): Completable =
+        userRepository.loginWithGoogle(acct)
+            .subscribeOn(Schedulers.io())
+
+
+    fun loginWithPhone(storedVerificationId: String, verificationCode: String, userName: String, phone: String): Completable {
+        return userRepository.loginWithPhone(storedVerificationId, verificationCode, userName, phone)
             .subscribeOn(Schedulers.io())
     }
 
-    fun  loginPhone(credential: PhoneAuthCredential): Completable {
-        return userRepository.loginPhone(credential)
+    fun sendVerificationCode(phoneNumber: String): Maybe<String> =
+        userRepository.sendVerificationCode(phoneNumber)
             .subscribeOn(Schedulers.io())
-    }
 
-    fun addUserToDb(name: String?, email: String?, phone: String?) {
-        userRepository.addUserToDb(name, email, phone)
-    }
+    fun checkAuthUser(): Boolean = userRepository.checkAuthUser()
 }

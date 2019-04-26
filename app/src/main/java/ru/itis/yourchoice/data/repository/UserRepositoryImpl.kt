@@ -49,7 +49,13 @@ class UserRepositoryImpl
             .doOnComplete {
                 searchUserInDb(acct.email, null)
                     .observeOn(Schedulers.io())
-                    .subscribe({}, {addUserToDb(acct.displayName, acct.email, null)})
+                    .subscribe({
+                        if(!it) {
+                            addUserToDb(acct.displayName, acct.email, null)
+                        }
+                    }, {
+                        Log.d("MYLOG", "err")
+                    })
             }
     }
 
@@ -74,7 +80,9 @@ class UserRepositoryImpl
                         searchUserInDb(null, phone)
                             .observeOn(Schedulers.io())
                             .subscribe({
-                                addUserToDb(userName, null, phone)
+                                if(!it) {
+                                    addUserToDb(userName, null, phone)
+                                }
                             }, {})
                     }
             }
@@ -137,42 +145,30 @@ class UserRepositoryImpl
             }
     }
 
-    override fun searchUserInDb(email: String?, phone: String?): Completable {
-        return Completable.create { emitter ->
+    override fun searchUserInDb(email: String?, phone: String?): Single<Boolean> {
+        return Single.create { emitter ->
             db.collection(USERS)
                 .get()
-                .addOnCompleteListener { documents ->
-                    var i: Int = 0
+                .addOnSuccessListener { documents ->
                     val list: ArrayList<User> = ArrayList()
-                    for (document in documents) {
+                    for ((i, document) in documents.withIndex()) {
                         list.add(document.toObject(User::class.java))
-                        if (list.get(i).email == email || list.get(i).phone == phone) {
-                            emitter.onComplete()
+                        if(list[i].email == null) {
+                            if (list[i].phone == phone) {
+                                emitter.onSuccess(true)
+                            }
                         }
-                        i++
-                        Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
+                        if(list[i].phone == null) {
+                            if (list[i].email == email) {
+                                emitter.onSuccess(true)
+                            }
+                        }
                     }
-                    emitter.onError(Exception(""))
+                    emitter.onSuccess(false)
                 }
+                .addOnFailureListener { exception ->
+                    emitter.onError(exception)
+                 }
         }
-//        db.collection(USERS)
-//                 .get()
-//                 .addOnSuccessListener { documents ->
-//                     var i: Int = 0
-//                     val list: ArrayList<User> = ArrayList()
-//                     for (document in documents) {
-//                         list.add(document.toObject(User::class.java))
-//                         if (list.get(i).email == email || list.get(i).phone == phone) {
-//
-//                         }
-//                         i++
-//                         Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
-//                     }
-//
-//                 }
-//                 .addOnFailureListener { exception ->
-//                     emitter.onError(exception)
-//                 }
     }
 }
-

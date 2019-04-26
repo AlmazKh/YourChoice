@@ -9,4 +9,5 @@ data class User (
     val location: String?,
     val photo: String?
 ) {
+    constructor() : this("", "", "", "", "")
 }

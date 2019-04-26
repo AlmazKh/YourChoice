@@ -10,6 +10,7 @@ interface UserRepository {
     fun loginWithPhone(storedVerificationId: String, verificationCode: String, userName: String, phone: String): Completable
     fun sendVerificationCode(phoneNumber: String): Maybe<String>
     fun addUserToDb(name: String?, email: String?, phone: String?)
+    fun searchUserInDb(email: String?, phone: String?): Completable
     fun getCurrentUser(): FirebaseUser?
     fun checkAuthUser(): Boolean
 }

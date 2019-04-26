@@ -10,6 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.UserRepository
 import ru.itis.yourchoice.core.model.User
 import java.util.concurrent.TimeUnit
@@ -45,11 +47,18 @@ class UserRepositoryImpl
             }
         }
             .doOnComplete {
-                addUserToDb(acct.displayName, acct.email, null)
+                searchUserInDb(acct.email, null)
+                    .observeOn(Schedulers.io())
+                    .subscribe({}, {addUserToDb(acct.displayName, acct.email, null)})
             }
     }
 
-    override fun loginWithPhone(storedVerificationId: String, verificationCode: String, userName: String, phone: String): Completable {
+    override fun loginWithPhone(
+        storedVerificationId: String,
+        verificationCode: String,
+        userName: String,
+        phone: String
+    ): Completable {
         return Single.fromCallable { PhoneAuthProvider.getCredential(storedVerificationId, verificationCode) }
             .flatMapCompletable { credential ->
                 Completable.create { emitter ->
@@ -61,9 +70,13 @@ class UserRepositoryImpl
                         }
                     }
                 }
-                        .doOnComplete {
-                            addUserToDb(userName, null, null)
-                        }
+                    .doOnComplete {
+                        searchUserInDb(null, phone)
+                            .observeOn(Schedulers.io())
+                            .subscribe({
+                                addUserToDb(userName, null, phone)
+                            }, {})
+                    }
             }
     }
 
@@ -123,4 +136,43 @@ class UserRepositoryImpl
                 Log.d("MYLOG", it.message)
             }
     }
+
+    override fun searchUserInDb(email: String?, phone: String?): Completable {
+        return Completable.create { emitter ->
+            db.collection(USERS)
+                .get()
+                .addOnCompleteListener { documents ->
+                    var i: Int = 0
+                    val list: ArrayList<User> = ArrayList()
+                    for (document in documents) {
+                        list.add(document.toObject(User::class.java))
+                        if (list.get(i).email == email || list.get(i).phone == phone) {
+                            emitter.onComplete()
+                        }
+                        i++
+                        Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
+                    }
+                    emitter.onError(Exception(""))
+                }
+        }
+//        db.collection(USERS)
+//                 .get()
+//                 .addOnSuccessListener { documents ->
+//                     var i: Int = 0
+//                     val list: ArrayList<User> = ArrayList()
+//                     for (document in documents) {
+//                         list.add(document.toObject(User::class.java))
+//                         if (list.get(i).email == email || list.get(i).phone == phone) {
+//
+//                         }
+//                         i++
+//                         Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
+//                     }
+//
+//                 }
+//                 .addOnFailureListener { exception ->
+//                     emitter.onError(exception)
+//                 }
+    }
 }
+

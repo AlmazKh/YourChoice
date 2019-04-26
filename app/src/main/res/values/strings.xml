@@ -6,7 +6,7 @@
     <string name="please_sign_in_tv">Please sign in</string>
     <string name="sign_in_with_facebook_btn">Sign in with Facebook</string>
     <string name="sign_in_with_google_btn">Sign in with Google</string>
-    <string name="sign_in_with_phone_btn">Sign in with Phone</string>
+    <string name="sign_in_with_phone">Sign in with Phone</string>
     <string name="login_success">Login successful</string>
     <string name="verify_code_sending">Wait, your code is sending</string>
     <string name="err_phone_format">Write correct phone number</string>

@@ -1,45 +1,39 @@
 package ru.itis.yourchoice.presenter.addpost
 
-import android.content.ContentValues
-import android.util.Log
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.itis.yourchoice.core.interactors.AddPostInteractor
-import ru.itis.yourchoice.core.model.Post
+import ru.itis.yourchoice.presenter.base.BasePresenter
 import ru.itis.yourchoice.view.addpost.AddPostView
-import javax.inject.Inject
 
-@InjectViewState
-class AddPostPresenter
-@Inject constructor(
-    private val addPostInteractor: AddPostInteractor
-) : MvpPresenter<AddPostView>() {
-    fun getMainCategories() : ArrayList<String> = addPostInteractor.getMainCategories()
+class AddPostPresenter(
+        private val addPostInteractor: AddPostInteractor
+) : BasePresenter<AddPostView>() {
+    fun getMainCategories(): ArrayList<String> = addPostInteractor.getMainCategories()
 
-    fun getCategories(mainCategory: Any?) {
-        addPostInteractor.getCategories(mainCategory)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val list: ArrayList<String> = ArrayList()
-                it.forEach { list.add(it.name) }
-                viewState.updateUI(list)
-            }, {
+    fun getSubcategories(mainCategory: Any?) {
+        addPostInteractor.getSubcategories(mainCategory)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val list: ArrayList<String> = ArrayList()
+                    it.forEach { list.add(it.name) }
+                    view?.updateUI(list)
+                }, {
 
-            })
+                })
     }
 
-    fun addPost(mainCategory: Any, category: String, description: String) {
+    fun addPost(mainCategory: Any, category: String, postName: String, description: String) {
         addPostInteractor.addPostIntoDb(
-            mainCategory,
-            category,
-            description
+                mainCategory,
+                category,
+                postName,
+                description
         )
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                viewState.postAddedSuccessful()
-            }, {
-                viewState.showError(it.message ?: "Post adding error. Please, try again")
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    view?.postAddedSuccessful()
+                }, {
+                    view?.showError(it.message ?: "Post adding error. Please, try again")
+                })
     }
 }

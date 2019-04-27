@@ -23,6 +23,7 @@
     <string name="title_news">News</string>
     <string name="title_addpost">Add post</string>
     <string name="title_menu">Menu</string>
+
     <string name="get_verification_code">Get verification code</string>
     <string name="phone_hint">+78005553535</string>
     <string name="name_hint">Ivan</string>
@@ -32,5 +33,8 @@
     <string name="user_name_tv">Write your name</string>
     <string name="verification_code_tv">Verification code</string>
     <string name="title_delete_post">delete post</string>
+    <string name="post_name_hint">Post name</string>
+    <string name="err_fill_all_fields">Please, fill in all the fields</string>
+    <string name="post_add_success">Post added successful</string>
 
 </resources>

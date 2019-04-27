@@ -11,4 +11,8 @@
         <item name="android:windowActionBar">false</item>
     </style>
 
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorHeadlineText</item>
+    </style>
+
 </resources>

@@ -1,37 +1,31 @@
 package ru.itis.yourchoice.view.addpost
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatFragment
-import ru.itis.yourchoice.R
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.facebook.FacebookSdk.getApplicationContext
 import kotlinx.android.synthetic.main.add_post_fragment.*
 import kotlinx.android.synthetic.main.main_activity.*
-import ru.itis.yourchoice.di.component.DaggerActivityComponent
-import ru.itis.yourchoice.di.module.PresenterModule
+import ru.itis.yourchoice.R
+import ru.itis.yourchoice.YourChoiceApp
 import ru.itis.yourchoice.presenter.addpost.AddPostPresenter
-import ru.itis.yourchoice.view.MainActivity
 import javax.inject.Inject
 
-class AddPostFragment : MvpAppCompatFragment(), AddPostView {
+class AddPostFragment : Fragment(), AddPostView {
 
     @Inject
-    @InjectPresenter
     lateinit var addPostPresenter: AddPostPresenter
 
-    @ProvidePresenter
-    fun provideAddPostPresenter() = addPostPresenter
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        injectDependency()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        YourChoiceApp.appComponent
+                .appPostComponent()
+                .withActivity(activity!! as AppCompatActivity)
+                .build()
+                .inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,6 +36,7 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        addPostPresenter.attachView(this)
         activity?.tv_page_title?.setText(R.string.title_addpost)
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, addPostPresenter.getMainCategories())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -52,9 +47,8 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                addPostPresenter.getCategories(parent?.getItemAtPosition(position))
+                addPostPresenter.getSubcategories(parent?.getItemAtPosition(position))
             }
-
         }
     }
 
@@ -64,42 +58,60 @@ class AddPostFragment : MvpAppCompatFragment(), AddPostView {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.getItemId()) {
+        when (item?.itemId) {
             R.id.addpost_approve -> {
-                addPostPresenter.addPost(
-                    select_category_spinner.selectedItem.toString(),
-                    select_subcategory_spinner.selectedItem.toString(),
-                    et_description.text.toString()
-                )
+                if (checkFields()) {
+                    showFieldsFillError()
+                } else {
+                    addPostPresenter.addPost(
+                            select_category_spinner.selectedItem.toString(),
+                            select_subcategory_spinner.selectedItem.toString(),
+                            et_post_name.text.toString(),
+                            et_description.text.toString()
+                    )
+                }
                 return true
             }
             R.id.addpost_delet -> {
+                cleanFields()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
+    override fun checkFields(): Boolean =
+            et_post_name.text.toString().trim().equals("") || et_description.text.toString().trim().equals("")
+
+    override fun cleanFields() {
+        et_post_name.setText("")
+        et_description.setText("")
+    }
+
     override fun updateUI(categories: List<String>) {
-        Log.d("MYLOG", "updateUI with categories")
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         select_subcategory_spinner.setAdapter(adapter)
     }
 
-    override fun postAddedSuccessful() =
-        Toast.makeText(getApplicationContext(),
-            "Post added successful", Toast.LENGTH_LONG).show()
+    override fun postAddedSuccessful() {
+        cleanFields()
+        Toast.makeText(context,
+                R.string.post_add_success, Toast.LENGTH_LONG).show()
+    }
 
     override fun showError(errorText: String) =
-        Toast.makeText(getApplicationContext(),
-            errorText, Toast.LENGTH_LONG).show()
+            Toast.makeText(context,
+                    errorText, Toast.LENGTH_LONG).show()
 
-    private fun injectDependency() {
-        val activityComponent = DaggerActivityComponent.builder()
-            .presenterModule(PresenterModule())
-            .build()
-        activityComponent.inject(this)
+    override fun showFieldsFillError() =
+            Toast.makeText(context,
+                    R.string.err_fill_all_fields, Toast.LENGTH_SHORT).show()
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        addPostPresenter.detachView()
     }
 
     companion object {

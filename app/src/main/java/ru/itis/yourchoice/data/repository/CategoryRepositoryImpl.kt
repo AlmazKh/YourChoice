@@ -8,14 +8,16 @@ import ru.itis.yourchoice.core.interfaces.CategoryRepository
 import ru.itis.yourchoice.core.model.Category
 import javax.inject.Inject
 
+private const val CATEGORIES = "categories"
+
 class CategoryRepositoryImpl
 @Inject constructor(
     private val db: FirebaseFirestore
 ): CategoryRepository {
-    override fun getCategories(category: Int): Maybe<MutableList<Category>> {
+    override fun getSubcategories(category: Int): Maybe<List<Category>> {
         return Maybe.create { emitter ->
-            db.collection("categories")
-                .whereEqualTo("id", category)
+            db.collection(CATEGORIES)
+                .whereEqualTo("category_id", category)
                 .get()
                 .addOnSuccessListener { documents ->
                     val list: ArrayList<Category> = ArrayList()

@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <!--<android.support.design.widget.AppBarLayout-->
-            <!--android:id="@+id/container_toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent">-->
-        <!--<android.support.v7.widget.Toolbar-->
-                <!--android:id="@+id/toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="?attr/colorPrimary"-->
-                <!--android:theme="?attr/actionBarTheme"-->
-                <!--android:minHeight="?attr/actionBarSize"-->
-                <!--app:title="@string/title_addpost"-->
-        <!--/>-->
-    <!--</android.support.design.widget.AppBarLayout>-->
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/spinner_cat_container"
         android:layout_width="308dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/tv_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/et_post_name_layout">
 
         <Spinner
             android:id="@+id/select_category_spinner"
@@ -43,38 +24,67 @@
     </FrameLayout>
 
     <FrameLayout
-            android:id="@+id/spinner_subcat_container"
-            android:layout_width="308dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_cat_container"
-            android:background="@drawable/tv_background">
+        android:id="@+id/spinner_subcat_container"
+        android:layout_width="308dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/tv_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_cat_container">
 
         <Spinner
-                android:id="@+id/select_subcategory_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:spinnerMode="dropdown"
-        />
+            android:id="@+id/select_subcategory_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown" />
     </FrameLayout>
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/et_description_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="308dp"
+        android:layout_height="236dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:boxStrokeColor="@color/colorHeadlineText"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_subcat_container">
+
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_description"
-            android:layout_width="308dp"
-            android:layout_height="236dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:autofillHints="Write description"
-            android:background="@drawable/tv_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="start"
-            android:hint="Write description "
+            android:hint="Description"
             android:inputType="textMultiLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_subcat_container"/>
+            android:textColorLink="@color/colorHeadlineText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/et_post_name_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="308dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:boxStrokeColor="@color/colorHeadlineText"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_post_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/post_name_hint"
+            android:textColorLink="@color/colorHeadlineText" />
+    </android.support.design.widget.TextInputLayout>
 </android.support.constraint.ConstraintLayout>

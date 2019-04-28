@@ -6,7 +6,13 @@
     <string name="please_sign_in_tv">Please sign in</string>
     <string name="sign_in_with_facebook_btn">Sign in with Facebook</string>
     <string name="sign_in_with_google_btn">Sign in with Google</string>
-    <string name="sign_in_with_phone_btn">Sign in with Phone</string>
+    <string name="sign_in_with_phone">Sign in with Phone</string>
+    <string name="login_success">Login successful</string>
+    <string name="verify_code_sending">Wait, your code is sending</string>
+    <string name="err_phone_format">Write correct phone number</string>
+    <string name="err_verify_code">Error! Get code first, then write into the field</string>
+    <string name="err_phones_mismatch">Stored and wited phone numbers mismatch</string>
+
 
     <string name="web_client_id">290055398849-tnkdl4feh96242qb8189omeb1808o16l.apps.googleusercontent.com</string>
     <string name="facebook_app_id">410577849737392</string>
@@ -17,6 +23,7 @@
     <string name="title_news">News</string>
     <string name="title_addpost">Add post</string>
     <string name="title_menu">Menu</string>
+
     <string name="get_verification_code">Get verification code</string>
     <string name="phone_hint">+78005553535</string>
     <string name="name_hint">Ivan</string>
@@ -26,5 +33,8 @@
     <string name="user_name_tv">Write your name</string>
     <string name="verification_code_tv">Verification code</string>
     <string name="title_delete_post">delete post</string>
+    <string name="post_name_hint">Post name</string>
+    <string name="err_fill_all_fields">Please, fill in all the fields</string>
+    <string name="post_add_success">Post added successful</string>
 
 </resources>

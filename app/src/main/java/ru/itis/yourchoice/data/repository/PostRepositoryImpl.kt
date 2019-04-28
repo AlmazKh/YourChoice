@@ -6,13 +6,13 @@ import io.reactivex.Completable
 import ru.itis.yourchoice.core.interfaces.PostRepository
 import javax.inject.Inject
 
-private const val OWNER_ID = "owner_id"
-private const val MAIN_CATEGORY_ID = "main_category"
-private const val CATEGOGY_NAME = "name"
+private const val CATEGORY_ID = "category_id"
+private const val SUBCATEGORY_ID = "subcategory_id"
+private const val POST_NAME = "name"
 private const val POST_DESCRIPTION = "description"
+private const val OWNER_ID = "owner_id"
 private const val POSTS = "posts"
 /*  CATEGORY_ID can be:
-    0 = series, films, books
     1 = films
     2 = series
     3 = events
@@ -24,12 +24,13 @@ class PostRepositoryImpl
     private val firebaseAuth: FirebaseAuth,
     private val db: FirebaseFirestore
 ): PostRepository {
-    override fun addPostIntoDb(category: Int, subcategory: String, description: String) : Completable {
+    override fun addPostIntoDb(category: Int, subcategory: String, postName: String, description: String) : Completable {
         val postMap = HashMap<String, Any?>()
-        postMap[OWNER_ID] = firebaseAuth.currentUser?.uid
-        postMap[MAIN_CATEGORY_ID] = category
-        postMap[CATEGOGY_NAME] = subcategory
+        postMap[CATEGORY_ID] = category
+        postMap[SUBCATEGORY_ID] = subcategory
+        postMap[POST_NAME] = postName
         postMap[POST_DESCRIPTION] = description
+        postMap[OWNER_ID] = firebaseAuth.currentUser?.uid
         return Completable.create { emitter ->
             db.collection(POSTS)
                 .add(postMap)

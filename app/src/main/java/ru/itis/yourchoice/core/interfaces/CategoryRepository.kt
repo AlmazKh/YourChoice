@@ -4,5 +4,5 @@ import io.reactivex.Maybe
 import ru.itis.yourchoice.core.model.Category
 
 interface CategoryRepository {
-    fun getCategories (category: Int) : Maybe<MutableList<Category>>
+    fun getSubcategories (category: Int) : Maybe<List<Category>>
 }

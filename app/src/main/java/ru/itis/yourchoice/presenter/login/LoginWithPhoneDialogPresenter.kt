@@ -1,68 +1,67 @@
 package ru.itis.yourchoice.presenter.login
 
-import android.content.ContentValues
 import android.util.Log
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.tasks.TaskExecutors
-import com.google.firebase.FirebaseException
-import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import ru.itis.yourchoice.core.interactors.LoginInteractor
-import ru.itis.yourchoice.view.login.LoginView
+import ru.itis.yourchoice.presenter.base.BasePresenter
 import ru.itis.yourchoice.view.login.LoginWithPhoneView
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 const val PHONE_NUMBER_LENGHT = 10
 
-@InjectViewState
-class LoginWithPhoneDialogPresenter
-@Inject constructor(
+class LoginWithPhoneDialogPresenter(
     private val loginInteractor: LoginInteractor
-) : MvpPresenter<LoginWithPhoneView>() {
+) : BasePresenter<LoginWithPhoneView>() {
 
-    private lateinit var storedVerificationId: String
-    private lateinit var storedPhoneNumber: String
+    private var storedVerificationId: String? = null
+    private var storedPhoneNumber: String? = null
 
-    fun sendVerificationCode(phoneNumber: String, userName: String) {
+    fun sendVerificationCode(phoneNumber: String) {
         if (phoneNumber.isEmpty()) {
+            view?.showErrorPhoneNumberFormat()
             return
         }
         if (phoneNumber.length < PHONE_NUMBER_LENGHT) {
+            view?.showErrorPhoneNumberFormat()
             return
         }
         loginInteractor.sendVerificationCode(phoneNumber)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(onSuccess = {
-                viewState.codeIsSending()
+            .subscribe({
+                view?.codeIsSending()
                 storedVerificationId = it
                 storedPhoneNumber = phoneNumber
-            }, onComplete = {
-                viewState.updateUI()
-                viewState.signInSuccess()
-                Log.d("MYLOG", "presenter sendCode ${loginInteractor.getCurrentUser()}")
-            }, onError = {viewState.showError(it.toString())})
-
+            }, {
+                view?.showError(it.toString())
+            }, {
+                Log.d("MYLOG", "success send verif")
+                view?.signInSuccess()
+            })
         Log.d("MYLOG", "presenter sendCode")
     }
 
-    fun verifySignInCode(verificationCode: String, userName: String) {
-        loginInteractor.loginPhone(storedVerificationId, verificationCode)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                loginInteractor.addUserToDb(userName, null, storedPhoneNumber)
-                viewState.updateUI()
-                viewState.signInSuccess()
-            }, {
-                viewState.showError(it.message ?: "Login error")
-                it.printStackTrace()
-            })
+    fun verifySignInCode(verificationCode: String, userName: String, phoneNumber: String) {
+        if (storedVerificationId == null) {
+            view?.showErrorVerificationCode()
+            return
+        }
+        if (storedPhoneNumber == null) {
+            view?.showErrorPhoneNumberFormat()
+            return
+        }
+        if(storedPhoneNumber != phoneNumber) {
+            view?.showStoredAndWritedPhonesNumberMismatch()
+        }
+        disposables.add(
+            loginInteractor.loginWithPhone(storedVerificationId!!, verificationCode, userName, phoneNumber)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.d("MYLOG", "success verif")
+                    view?.signInSuccess()
+                }, {
+                    view?.showError(it.message ?: "Login error")
+                    it.printStackTrace()
+                })
+        )
     }
-
-    fun getCurrentUser(): FirebaseUser? = loginInteractor.getCurrentUser()
 }

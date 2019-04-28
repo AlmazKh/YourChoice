@@ -1,5 +1,6 @@
 package ru.itis.yourchoice.di.module
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,7 +10,12 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+class AppModule(
+    private val context: Context
+) {
+    @Provides
+    @Singleton
+    fun provideContext(): Context = context
 
     @Provides
     @Singleton

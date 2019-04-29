@@ -125,9 +125,9 @@ class UserRepositoryImpl
         }
     }
 
-    override fun getCurrentUser(): FirebaseUser? = firebaseAuth.currentUser
+    override fun getCurrentUser(): Single<FirebaseUser?> = Single.just(firebaseAuth.currentUser)
 
-    override fun checkAuthUser(): Boolean = firebaseAuth.currentUser != null
+    override fun checkAuthUser(): Single<Boolean> = Single.just(firebaseAuth.currentUser != null)
 
     override fun addUserToDb(name: String?, email: String?, phone: String?) {
         val userMap = HashMap<String, Any?>()

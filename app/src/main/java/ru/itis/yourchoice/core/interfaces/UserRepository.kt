@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
+import ru.itis.yourchoice.core.model.Category
 
 interface UserRepository {
     fun loginWithGoogle(acct: GoogleSignInAccount): Completable
@@ -14,4 +15,5 @@ interface UserRepository {
     fun searchUserInDb(email: String?, phone: String?): Single<Boolean>
     fun getCurrentUser(): FirebaseUser?
     fun checkAuthUser(): Boolean
+    fun getUsersInterests(): Single<List<Category>>
 }

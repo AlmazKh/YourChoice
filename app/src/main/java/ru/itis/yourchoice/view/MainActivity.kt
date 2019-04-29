@@ -3,12 +3,10 @@ package ru.itis.yourchoice.view
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.add_post_fragment.*
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.news_fragment.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.view.addpost.AddPostFragment
+import ru.itis.yourchoice.view.news.NewsFeedFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         when (item.itemId) {
             R.id.navigation_news -> {
-                fragmentTransaction.replace(R.id.main_container, NewsFragment.newInstance()).commit()
+                fragmentTransaction.replace(R.id.main_container, NewsFeedFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_addpost -> {

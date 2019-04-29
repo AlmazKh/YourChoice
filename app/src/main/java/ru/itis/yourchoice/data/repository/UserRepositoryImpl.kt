@@ -13,16 +13,18 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.UserRepository
+import ru.itis.yourchoice.core.model.Category
 import ru.itis.yourchoice.core.model.User
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val USER_NAME = "name"
+private const val USER_NAME = "subcategoryName"
 private const val USER_EMAIL = "email"
 private const val USER_PHONE = "phone"
 private const val USER_LOCATION = "location"
 private const val USER_PHOTO = "photo"
 private const val USERS = "users"
+private const val INTERESTS = "interests"
 
 class UserRepositoryImpl
 @Inject constructor(
@@ -169,6 +171,28 @@ class UserRepositoryImpl
                 .addOnFailureListener { exception ->
                     emitter.onError(exception)
                  }
+        }
+    }
+
+    override fun getUsersInterests(): Single<List<Category>> {
+        return Single.create { emitter ->
+            db.collection(INTERESTS)
+                .whereEqualTo("owner_id", firebaseAuth.currentUser?.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val list: ArrayList<Category> = ArrayList()
+                    for (document in documents) {
+                        list.add(document.toObject(Category::class.java))
+                        Log.d("MYLOG", "${document.id} => ${document.data}")
+                        Log.d("MYLOG", "${list[0]}")
+                    }
+                    Log.d("MYLOG", "Success getInterests $list")
+                    emitter.onSuccess(list)
+                }
+                .addOnFailureListener { exception ->
+                    emitter.onError(exception)
+                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                }
         }
     }
 }

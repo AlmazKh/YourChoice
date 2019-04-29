@@ -15,7 +15,7 @@ class AddPostPresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val list: ArrayList<String> = ArrayList()
-                    it.forEach { list.add(it.name) }
+                    it.forEach { list.add(it.subcategoryName) }
                     view?.updateUI(list)
                 }, {
 

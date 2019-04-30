@@ -18,7 +18,6 @@ class NewsFeedFragment : Fragment(), NewsFeedView {
     lateinit var newsFeedPresenter: NewsFeedPresenter
 
     private var newsFeedAdapter: NewsFeedAdapter? = null
-    private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,17 +64,15 @@ class NewsFeedFragment : Fragment(), NewsFeedView {
     }
 
     override fun addItemsToListView(list: List<Post>) {
-        val newsFeed = newsFeedAdapter?.list
-        newsFeed?.addAll(list)
-        newsFeedAdapter?.submitList(newsFeed)    }
+        newsFeedAdapter?.submitList(list)    }
 
     override fun showProgress() {
         swipeContainer.isRefreshing = true
-        isLoading = true    }
+    }
 
     override fun hideProgress() {
         swipeContainer.isRefreshing = false
-        isLoading = false    }
+    }
 
     override fun navigateToDetails(post: Post) {
         // TODO replace fragment with one news

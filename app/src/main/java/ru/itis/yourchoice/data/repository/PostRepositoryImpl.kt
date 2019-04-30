@@ -65,7 +65,7 @@ class PostRepositoryImpl
     fun getPostsFromDb(category: Category): Observable<Post> {
         return Observable.create {
             Log.d("MYLOG", "PostRepo getPostsFromDb 1 $it")
-            db.collection("POSTS")
+            db.collection(POSTS)
                 .whereEqualTo(CATEGORY_ID, category.categoryId)
                 .whereEqualTo(SUBCATEGORY_NAME, category.subcategoryName)
                 .get()

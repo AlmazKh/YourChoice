@@ -13,7 +13,6 @@ import ru.itis.yourchoice.core.model.Post
 class NewsFeedAdapter (
     private val newsLambda: (Post) -> Unit
 ) : ListAdapter<Post, NewsFeedAdapter.NewsFeedViewHolder>(NewsFeedDiffCallback()) {
-    var list: MutableList<Post>? = ArrayList()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): NewsFeedViewHolder {
         val inflater = LayoutInflater.from(p0.context)
@@ -26,11 +25,6 @@ class NewsFeedAdapter (
         holder.itemView.setOnClickListener {
             newsLambda.invoke(getItem(position))
         }
-    }
-
-    override fun submitList(list: MutableList<Post>?) {
-        this.list = list
-        super.submitList(list)
     }
 
     class NewsFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

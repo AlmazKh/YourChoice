@@ -11,6 +11,7 @@ import javax.inject.Inject
 class NewsFeedPresenter(
 private val newsFeedInteractor: NewsFeedInteractor
 ) : BasePresenter<NewsFeedView>() {
+
     fun updateNewsFeed() = newsFeedInteractor
         .getPostsFromDb()
         .doOnSubscribe { view?.showProgress() }

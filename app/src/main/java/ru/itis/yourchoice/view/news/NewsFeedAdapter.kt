@@ -22,6 +22,7 @@ class NewsFeedAdapter (
 
     override fun onBindViewHolder(holder: NewsFeedViewHolder, position: Int) {
         holder.tvPostDescription.text = getItem(position).description
+        //other fields...
         holder.itemView.setOnClickListener {
             newsLambda.invoke(getItem(position))
         }
@@ -34,6 +35,7 @@ class NewsFeedAdapter (
 
     class NewsFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvPostDescription = itemView.tv_post_description
+        // other fields ...
     }
 
     class NewsFeedDiffCallback : DiffUtil.ItemCallback<Post>() {

@@ -1,6 +1,5 @@
 package ru.itis.yourchoice.data.repository
 
-import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,7 +12,7 @@ import ru.itis.yourchoice.core.model.Post
 import javax.inject.Inject
 
 private const val CATEGORY_ID = "category_id"
-private const val SUBCATEGORY_ID = "subcategory_id"
+private const val SUBCATEGORY_NAME = "subcategory_id"
 private const val POST_NAME = "name"
 private const val POST_DESCRIPTION = "description"
 private const val OWNER_ID = "owner_id"
@@ -33,7 +32,7 @@ class PostRepositoryImpl
     override fun addPostIntoDb(category: Int, subcategory: String, postName: String, description: String): Completable {
         val postMap = HashMap<String, Any?>()
         postMap[CATEGORY_ID] = category
-        postMap[SUBCATEGORY_ID] = subcategory
+        postMap[SUBCATEGORY_NAME] = subcategory
         postMap[POST_NAME] = postName
         postMap[POST_DESCRIPTION] = description
         postMap[OWNER_ID] = firebaseAuth.currentUser?.uid
@@ -68,7 +67,7 @@ class PostRepositoryImpl
             Log.d("MYLOG", "PostRepo getPostsFromDb 1 $it")
             db.collection("POSTS")
                 .whereEqualTo(CATEGORY_ID, category.categoryId)
-                .whereEqualTo(SUBCATEGORY_ID, category.subcategoryName)
+                .whereEqualTo(SUBCATEGORY_NAME, category.subcategoryName)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
@@ -107,7 +106,7 @@ class PostRepositoryImpl
 //        return Maybe.create { emitter ->
 //            db.collection("POSTS")
 //                .whereEqualTo(CATEGORY_ID, categories.get(0).categoryId)
-//                .whereEqualTo(SUBCATEGORY_ID, categories.get(0).subcategoryName)
+//                .whereEqualTo(SUBCATEGORY_NAME, categories.get(0).subcategoryName)
 //                .get()
 //                .addOnSuccessListener { documents ->
 //                    for (document in documents) {

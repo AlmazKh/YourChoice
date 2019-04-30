@@ -3,12 +3,10 @@ package ru.itis.yourchoice.view
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.add_post_fragment.*
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.news_fragment.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.view.addpost.AddPostFragment
+import ru.itis.yourchoice.view.menu.MenuFragment
 
 class MainActivity : AppCompatActivity() {
 

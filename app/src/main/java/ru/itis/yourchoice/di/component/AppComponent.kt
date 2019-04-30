@@ -15,4 +15,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun authComponent(): AuthComponent.Builder
     fun appPostComponent(): AddPostComponent.Builder
+    fun menuComponent(): MenuComponent.Builder
 }

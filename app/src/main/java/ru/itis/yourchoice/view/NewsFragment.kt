@@ -21,5 +21,4 @@ class NewsFragment : MvpAppCompatFragment() {
     companion object {
         fun newInstance() = NewsFragment()
     }
-
 }

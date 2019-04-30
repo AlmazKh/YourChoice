@@ -38,18 +38,7 @@ class AddPostFragment : Fragment(), AddPostView {
         super.onViewCreated(view, savedInstanceState)
         addPostPresenter.attachView(this)
         activity?.tv_page_title?.setText(R.string.title_addpost)
-        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, addPostPresenter.getMainCategories())
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        select_category_spinner.setAdapter(adapter)
-        select_category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                addPostPresenter.getSubcategories(parent?.getItemAtPosition(position))
-            }
-        }
+        addPostPresenter.getMainCategories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -88,7 +77,22 @@ class AddPostFragment : Fragment(), AddPostView {
         et_description.setText("")
     }
 
-    override fun updateUI(categories: List<String>) {
+    override fun updateUIwithMainCategories(categories: List<String>) {
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        select_category_spinner.setAdapter(adapter)
+        select_category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                addPostPresenter.getSubcategories(parent?.getItemAtPosition(position))
+            }
+        }
+    }
+
+    override fun updateUIwithSubcategories(categories: List<String>) {
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         select_subcategory_spinner.setAdapter(adapter)

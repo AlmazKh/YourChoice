@@ -2,6 +2,7 @@ package ru.itis.yourchoice.core.interactors
 
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.CategoryRepository
 import ru.itis.yourchoice.core.interfaces.PostRepository
@@ -16,7 +17,9 @@ class AddPostInteractor
         private val postRepository: PostRepository,
         private val categoryRepository: CategoryRepository
 ) {
-    fun getMainCategories(): ArrayList<String> = CATEGORIES
+    fun getMainCategories(): Single<List<Category>> =
+        categoryRepository.getCategories()
+            .subscribeOn(Schedulers.io())
 
     fun getSubcategories(category: Any?): Maybe<List<Category>> =
             categoryRepository.getSubcategories(getMainCategoryId(category))

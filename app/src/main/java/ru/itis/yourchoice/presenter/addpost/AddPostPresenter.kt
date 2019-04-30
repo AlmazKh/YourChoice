@@ -8,7 +8,18 @@ import ru.itis.yourchoice.view.addpost.AddPostView
 class AddPostPresenter(
         private val addPostInteractor: AddPostInteractor
 ) : BasePresenter<AddPostView>() {
-    fun getMainCategories(): ArrayList<String> = addPostInteractor.getMainCategories()
+
+    fun getMainCategories() {
+        addPostInteractor.getMainCategories()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val list: ArrayList<String> = ArrayList()
+                    it.forEach { list.add(it.name) }
+                    view?.updateUIwithMainCategories(list)
+                }, {
+                    it.printStackTrace()
+                })
+    }
 
     fun getSubcategories(mainCategory: Any?) {
         addPostInteractor.getSubcategories(mainCategory)
@@ -16,9 +27,9 @@ class AddPostPresenter(
                 .subscribe({
                     val list: ArrayList<String> = ArrayList()
                     it.forEach { list.add(it.name) }
-                    view?.updateUI(list)
+                    view?.updateUIwithSubcategories(list)
                 }, {
-
+                    it.printStackTrace()
                 })
     }
 

@@ -24,6 +24,7 @@ class PostRepositoryImpl
     private val firebaseAuth: FirebaseAuth,
     private val db: FirebaseFirestore
 ): PostRepository {
+    
     override fun addPostIntoDb(category: Int, subcategory: String, postName: String, description: String) : Completable {
         val postMap = HashMap<String, Any?>()
         postMap[CATEGORY_ID] = category

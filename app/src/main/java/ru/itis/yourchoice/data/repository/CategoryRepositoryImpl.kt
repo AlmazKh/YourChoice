@@ -7,22 +7,18 @@ import io.reactivex.Maybe
 import io.reactivex.Single
 import ru.itis.yourchoice.core.interfaces.CategoryRepository
 import ru.itis.yourchoice.core.model.Category
+import ru.itis.yourchoice.data.CategoriesHolder
 import javax.inject.Inject
 
 private const val CATEGORIES = "categories"
 
-private val films: Category = Category(0, "Films", 1)
-private val series: Category = Category(0, "Series", 2)
-private val events: Category = Category(0, "Events", 3)
-private val books: Category = Category(0, "Books", 4)
-private val categoriesList: List<Category> = arrayListOf(films, series, events, books)
-
 class CategoryRepositoryImpl
 @Inject constructor(
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val categoriesHolder: CategoriesHolder
 ): CategoryRepository {
 
-    override fun getCategories(): Single<List<Category>> = Single.just(categoriesList)
+    override fun getCategories(): Single<List<Category>> = Single.just(categoriesHolder.getCategories())
 
     override fun getSubcategories(category: Int): Maybe<List<Category>> {
         return Maybe.create { emitter ->
@@ -43,5 +39,4 @@ class CategoryRepositoryImpl
                 }
         }
     }
-
 }

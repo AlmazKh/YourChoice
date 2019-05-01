@@ -8,24 +8,34 @@ import ru.itis.yourchoice.view.addpost.AddPostView
 class AddPostPresenter(
         private val addPostInteractor: AddPostInteractor
 ) : BasePresenter<AddPostView>() {
-    fun getMainCategories(): ArrayList<String> = addPostInteractor.getMainCategories()
 
-    fun getSubcategories(mainCategory: Any?) {
-        addPostInteractor.getSubcategories(mainCategory)
+    fun getMainCategories() {
+        addPostInteractor.getCategories()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val list: ArrayList<String> = ArrayList()
-                    it.forEach { list.add(it.subcategoryName) }
-                    view?.updateUI(list)
+                    it.forEach { list.add(it.name) }
+                    view?.updateUIwithMainCategories(list)
                 }, {
-
+                    it.printStackTrace()
                 })
     }
 
-    fun addPost(mainCategory: Any, category: String, postName: String, description: String) {
+    fun getSubcategories(category: String) {
+        addPostInteractor.getSubcategories(category)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val list: ArrayList<String> = ArrayList()
+                    it.forEach { list.add(it.name) }
+                    view?.updateUIwithSubcategories(list)
+                }, {
+                    it.printStackTrace()
+                })
+    }
+
+    fun addPost(subcategory: String, postName: String, description: String) {
         addPostInteractor.addPostIntoDb(
-                mainCategory,
-                category,
+                subcategory,
                 postName,
                 description
         )

@@ -7,7 +7,6 @@ import ru.itis.yourchoice.core.model.Category
 import ru.itis.yourchoice.core.model.Post
 
 interface PostRepository {
-    fun addPostIntoDb (category: Int, subcategory: String, postName: String, description: String) : Completable
-//    fun getPostsFromDb(categories: List<Category>): Maybe<MutableList<Post>>
     fun getPosts(categories: List<Category>): Single<MutableList<Post>>
+    fun addPostIntoDb (subcategory: Int, postName: String, description: String) : Completable
 }

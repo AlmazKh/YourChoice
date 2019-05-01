@@ -10,7 +10,7 @@ class AddPostPresenter(
 ) : BasePresenter<AddPostView>() {
 
     fun getMainCategories() {
-        addPostInteractor.getMainCategories()
+        addPostInteractor.getCategories()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val list: ArrayList<String> = ArrayList()
@@ -21,8 +21,8 @@ class AddPostPresenter(
                 })
     }
 
-    fun getSubcategories(mainCategory: Any?) {
-        addPostInteractor.getSubcategories(mainCategory)
+    fun getSubcategories(category: String) {
+        addPostInteractor.getSubcategories(category)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val list: ArrayList<String> = ArrayList()
@@ -33,10 +33,9 @@ class AddPostPresenter(
                 })
     }
 
-    fun addPost(mainCategory: Any, category: String, postName: String, description: String) {
+    fun addPost(subcategory: String, postName: String, description: String) {
         addPostInteractor.addPostIntoDb(
-                mainCategory,
-                category,
+                subcategory,
                 postName,
                 description
         )

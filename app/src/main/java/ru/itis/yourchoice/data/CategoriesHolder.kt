@@ -14,7 +14,5 @@ class CategoriesHolder @Inject constructor() {
         categories.add(Category(4, "Books"))
     }
 
-    fun getCategories(): List<Category> {
-        return categories
-    }
+    fun getCategories(): List<Category> = categories
 }

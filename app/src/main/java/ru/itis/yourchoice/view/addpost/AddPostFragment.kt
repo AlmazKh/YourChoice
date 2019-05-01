@@ -53,7 +53,6 @@ class AddPostFragment : Fragment(), AddPostView {
                     showFieldsFillError()
                 } else {
                     addPostPresenter.addPost(
-                            select_category_spinner.selectedItem.toString(),
                             select_subcategory_spinner.selectedItem.toString(),
                             et_post_name.text.toString(),
                             et_description.text.toString()
@@ -87,7 +86,7 @@ class AddPostFragment : Fragment(), AddPostView {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                addPostPresenter.getSubcategories(parent?.getItemAtPosition(position))
+                addPostPresenter.getSubcategories(parent?.getItemAtPosition(position).toString())
             }
         }
     }

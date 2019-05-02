@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import ru.itis.yourchoice.core.interfaces.PostRepository
 import ru.itis.yourchoice.core.model.Category
+import ru.itis.yourchoice.core.model.Interest
 import ru.itis.yourchoice.core.model.Post
 import javax.inject.Inject
 
@@ -48,76 +49,37 @@ class PostRepositoryImpl
         }
     }
 
-    override fun getPosts(categories: List<Category>): Single<MutableList<Post>> {
-        return Observable.fromIterable(categories)
-            .flatMap {
-                Log.d("MYLOG", "getPost repo flatMap, category: $it")
-                getPostsFromDb(it)
-            }
-            .concatMap {
-                Log.d("MYLOG", "getPost repo concat, category: $it")
-                Observable.just(it)
-            }
-            .toList()
-    }
+    override fun getPostsFromDb(interests: List<Interest>): Single<MutableList<Post>> {
+        return Single.create { emitter ->
+            Log.d("MYLOG", "PostRepo getPostsFromDb 1")
+            var list: ArrayList<Post> = ArrayList()
+            var i = 0
+            for (interest in interests) {
+                db.collection(POSTS)
+                    .whereEqualTo("subcategory_id", interest.subcategoryId)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            list.add(document.toObject(Post::class.java))
+                            Log.d("MYLOG", "PostRepo getPostsFromDb 2 ${document.id} => ${document.data}")
+                            Log.d("MYLOG", "list[0] = ${list[0]}")
+                            emitter.onSuccess(list)
+                        }
+//                        emitter.onSuccess(documents.toObjects(Post::class.java))
 
-    fun getPostsFromDb(category: Category): Observable<Post> {
-        return Observable.create {
-            Log.d("MYLOG", "PostRepo getPostsFromDb 1 $it")
-            db.collection(POSTS)
-                .whereEqualTo(CATEGORY_ID, category.categoryId)
-                .whereEqualTo(SUBCATEGORY_NAME, category.subcategoryName)
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        Log.d("MYLOG", "PostRepo getPostsFromDb 2 ${document.id} => ${document.data}")
                     }
+                    .addOnFailureListener { exception ->
+                        Log.w("MYLOG", "Error getting documents: ", exception)
+                        emitter.onError(exception)
+                    }
+                i++
+            }
+            if (i== interests.size) {
+//                emitter.onSuccess(list)
+                Log.d("MYLOG", "i = $i; list = $list")
 
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("MYLOG", "Error getting documents: ", exception)
-                }
-            Log.d("MYLOG", "PostRepo getPostsFromDb 3 $it")
+            }
+            Log.d("MYLOG", "PostRepo getPostsFromDb 3 ")
         }
     }
-//        Maybe.create { emitter ->
-//            db.collection("POSTS")
-////                .whereEqualTo(MAIN_CATEGORY_ID, categories.get(0).id)
-////                .whereEqualTo(CATEGOGY_NAME, categories.get(0).subcategoryName)
-//                .get()
-//                .addOnSuccessListener { documents ->
-//                    val list: ArrayList<Post> = ArrayList()
-//                    for (document in documents) {
-//                        list.add(document.toObject(Post::class.java))
-//                        Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
-//                    }
-//                    emitter.onSuccess(list)
-//                }
-//                .addOnFailureListener { exception ->
-//                    emitter.onError(exception)
-//                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-//                }
-//        }
-//    }
-
-//    override fun getPostsFromDb(categories: List<Category>): Maybe<MutableList<Post>> {
-//        val list: ArrayList<Post> = ArrayList()
-//        return Maybe.create { emitter ->
-//            db.collection("POSTS")
-//                .whereEqualTo(CATEGORY_ID, categories.get(0).categoryId)
-//                .whereEqualTo(SUBCATEGORY_NAME, categories.get(0).subcategoryName)
-//                .get()
-//                .addOnSuccessListener { documents ->
-//                    for (document in documents) {
-//                        list.add(document.toObject(Post::class.java))
-//                        Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
-//                    }
-//                    emitter.onSuccess(list)
-//                }
-//                .addOnFailureListener { exception ->
-//                    emitter.onError(exception)
-//                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-//                }
-//        }
-//    }
 }

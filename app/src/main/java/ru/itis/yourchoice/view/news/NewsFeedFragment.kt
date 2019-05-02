@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.news_feed_fragment.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
@@ -37,6 +38,7 @@ class NewsFeedFragment : Fragment(), NewsFeedView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         newsFeedPresenter.attachView(this)
+        activity?.tv_page_title?.setText("")
         swipeContainer.setOnRefreshListener {
             refreshNewsFeed()
         }

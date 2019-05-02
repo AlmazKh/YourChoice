@@ -174,25 +174,25 @@ class UserRepositoryImpl
         }
     }
 
-    override fun getUsersInterests(): Single<List<Category>> {
-        return Single.create { emitter ->
-            db.collection(INTERESTS)
-                .whereEqualTo("owner_id", firebaseAuth.currentUser?.uid)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val list: ArrayList<Category> = ArrayList()
-                    for (document in documents) {
-                        list.add(document.toObject(Category::class.java))
-                        Log.d("MYLOG", "${document.id} => ${document.data}")
-                        Log.d("MYLOG", "${list[0]}")
-                    }
-                    Log.d("MYLOG", "Success getInterests $list")
-                    emitter.onSuccess(list)
-                }
-                .addOnFailureListener { exception ->
-                    emitter.onError(exception)
-                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                }
-        }
-    }
+//    override fun getUsersInterests(): Single<List<Category>> {
+//        return Single.create { emitter ->
+//            db.collection(INTERESTS)
+//                .whereEqualTo("owner_id", firebaseAuth.currentUser?.uid)
+//                .get()
+//                .addOnSuccessListener { documents ->
+//                    val list: ArrayList<Category> = ArrayList()
+//                    for (document in documents) {
+//                        list.add(document.toObject(Category::class.java))
+//                        Log.d("MYLOG", "${document.id} => ${document.data}")
+//                        Log.d("MYLOG", "${list[0]}")
+//                    }
+//                    Log.d("MYLOG", "Success getInterests $list")
+//                    emitter.onSuccess(list)
+//                }
+//                .addOnFailureListener { exception ->
+//                    emitter.onError(exception)
+//                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+//                }
+//        }
+//    }
 }

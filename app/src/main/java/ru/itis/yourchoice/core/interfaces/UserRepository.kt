@@ -15,5 +15,5 @@ interface UserRepository {
     fun searchUserInDb(email: String?, phone: String?): Single<Boolean>
     fun getCurrentUser(): FirebaseUser?
     fun checkAuthUser(): Boolean
-    fun getUsersInterests(): Single<List<Category>>
+//    fun getUsersInterests(): Single<List<Category>>
 }

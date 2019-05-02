@@ -32,7 +32,7 @@ class CategoryRepositoryImpl
         }
     }
 
-    override fun getCategoryIdByName(name: String): Single<Category> {
+    override fun getCategoryByName(name: String): Single<Category> {
         return Single.create{ emitter ->
             for(category in categoriesHolder.getCategories()) {
                 if(category.name == name) {
@@ -42,10 +42,10 @@ class CategoryRepositoryImpl
         }
     }
 
-    override fun getSubategoryIdByName(name: String): Single<Subcategory> {
+    override fun getSubategoryByNameAndCategoryId(name: String, categoryId: Int): Single<Subcategory> {
         return Single.create{ emitter ->
             for(subcategory in subcategoriesHolder.getSubcategories()) {
-                if(subcategory.name == name) {
+                if(subcategory.name == name && subcategory.categoryId == categoryId) {
                     emitter.onSuccess(subcategory)
                 }
             }

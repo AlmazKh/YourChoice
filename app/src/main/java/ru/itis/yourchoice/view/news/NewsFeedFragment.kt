@@ -78,6 +78,10 @@ class NewsFeedFragment : Fragment(), NewsFeedView {
 
     override fun navigateToDetails(post: Post) {
         // TODO replace fragment with one news
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.main_container, PostFragment.newInstance())
+        transaction?.addToBackStack(null)
+        transaction?.commitAllowingStateLoss()
     }
 
     private fun refreshNewsFeed() {

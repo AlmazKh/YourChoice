@@ -27,4 +27,8 @@ class PostFragment: Fragment(), PostFragmentView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_news, null)
     }
+
+    companion object {
+        fun newInstance() = PostFragment()
+    }
 }

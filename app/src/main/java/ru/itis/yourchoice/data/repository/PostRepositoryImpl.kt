@@ -63,9 +63,9 @@ class PostRepositoryImpl
                             list.add(document.toObject(Post::class.java))
                             Log.d("MYLOG", "PostRepo getPostsFromDb 2 ${document.id} => ${document.data}")
                             Log.d("MYLOG", "list[0] = ${list[0]}")
-                            emitter.onSuccess(list)
+//                            emitter.onSuccess(list)
                         }
-//                        emitter.onSuccess(documents.toObjects(Post::class.java))
+                        emitter.onSuccess(list)
 
                     }
                     .addOnFailureListener { exception ->
@@ -74,12 +74,6 @@ class PostRepositoryImpl
                     }
                 i++
             }
-            if (i== interests.size) {
-//                emitter.onSuccess(list)
-                Log.d("MYLOG", "i = $i; list = $list")
-
-            }
-            Log.d("MYLOG", "PostRepo getPostsFromDb 3 ")
         }
     }
 }

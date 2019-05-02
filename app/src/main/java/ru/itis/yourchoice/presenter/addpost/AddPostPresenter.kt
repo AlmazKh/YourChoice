@@ -33,8 +33,9 @@ class AddPostPresenter(
                 })
     }
 
-    fun addPost(subcategory: String, postName: String, description: String) {
+    fun addPost(category: String, subcategory: String, postName: String, description: String) {
         addPostInteractor.addPostIntoDb(
+                category,
                 subcategory,
                 postName,
                 description

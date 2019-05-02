@@ -1,7 +1,6 @@
 package ru.itis.yourchoice.core.interactors
 
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.CategoryRepository
@@ -21,14 +20,17 @@ class AddPostInteractor
             .subscribeOn(Schedulers.io())
 
     fun getSubcategories(category: String): Single<List<Subcategory>> =
-        categoryRepository.getCategoryIdByName(category)
+        categoryRepository.getCategoryByName(category)
             .flatMap {
                 categoryRepository.getSubcategories(it.id)
             }
             .subscribeOn(Schedulers.io())
 
-    fun addPostIntoDb(subcategory: String, postName: String, description: String): Completable =
-        categoryRepository.getSubategoryIdByName(subcategory)
+    fun addPostIntoDb(category: String, subcategory: String, postName: String, description: String): Completable =
+        categoryRepository.getCategoryByName(category)
+            .flatMap {
+                categoryRepository.getSubategoryByNameAndCategoryId(subcategory, it.id)
+            }
             .flatMapCompletable {
                 postRepository.addPostIntoDb(
                     it.id,

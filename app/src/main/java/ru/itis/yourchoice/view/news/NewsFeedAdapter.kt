@@ -20,16 +20,25 @@ class NewsFeedAdapter (
     }
 
     override fun onBindViewHolder(holder: NewsFeedViewHolder, position: Int) {
+        //TODO: getOwnerName by Id; subcategoryName by Id
+        holder.tvPostName.text = getItem(position).postName
         holder.tvPostDescription.text = getItem(position).description
-        //other fields...
+        holder.tvOwnerName.text = getItem(position).ownerId
+        holder.tvSubcategoryName.text = getItem(position).subcategoryId.toString()
         holder.itemView.setOnClickListener {
             newsLambda.invoke(getItem(position))
         }
     }
 
     class NewsFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        //TODO
+//        fun bind(post: Post) {
+//
+//        }
+        val tvPostName = itemView.tv_post_name
         val tvPostDescription = itemView.tv_post_description
-        // other fields ...
+        val tvOwnerName = itemView.tv_user_name
+        val tvSubcategoryName = itemView.tv_category_name
     }
 
     class NewsFeedDiffCallback : DiffUtil.ItemCallback<Post>() {

@@ -1,4 +1,4 @@
-package ru.itis.yourchoice.view.menu
+package ru.itis.yourchoice.view.menu.interests
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
 
-class InterestsFragment: Fragment() {
+class InterestsFragment: Fragment(), InterestsView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

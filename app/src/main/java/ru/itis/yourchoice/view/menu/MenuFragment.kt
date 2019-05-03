@@ -11,7 +11,8 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.menu_fragment.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
-import ru.itis.yourchoice.view.NewsFragment
+import ru.itis.yourchoice.view.menu.interests.InterestsFragment
+import ru.itis.yourchoice.view.menu.profile.UserProfileFragment
 
 class MenuFragment : Fragment(), MenuFragmentView {
 
@@ -32,48 +33,36 @@ class MenuFragment : Fragment(), MenuFragmentView {
         super.onViewCreated(view, savedInstanceState)
         activity?.tv_page_title?.setText("YC")
         relativeLayout_profile.setOnClickListener { openProfilePage() }
-        tv_interests.setOnClickListener { openInterests() }
-        liner_layout_menu.setOnClickListener (View.OnClickListener {
-            when(it.id) {
-                R.id.tv_likes -> {
-                    //likes page
-                    Toast.makeText(context,"likes 1", Toast.LENGTH_SHORT).show()
-                }
-                R.id.tv_interests -> {
-                    Toast.makeText(context,"interests 1", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-
-        const_layout_menu.setOnClickListener { item ->
-            when(item.id) {
-                R.id.tv_likes -> {
-                    //likes page
-                    Toast.makeText(context,"likes 2", Toast.LENGTH_SHORT).show()
-
-                }
-                R.id.tv_interests -> {
-                    Toast.makeText(context,"interests 2", Toast.LENGTH_SHORT).show()
-
-                }
-                R.id.tv_settings -> {
-                    Toast.makeText(context,"settings 2", Toast.LENGTH_SHORT).show()
-
-                }
-            }
-        }
+        tv_likes.setOnClickListener { openLikesPage() }
+        tv_interests.setOnClickListener { openInterestsPage() }
+        tv_settings.setOnClickListener { openSettingspage() }
+        tv_help_feedback.setOnClickListener { openHelpAndFeedbackPage() }
 
     }
 
     override fun openProfilePage() {
-        Toast.makeText(context,"profile open", Toast.LENGTH_SHORT).show()
-
-    }
-    fun openInterests() {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(R.id.main_container, InterestsFragment.newInstance())?.commit()
+        fragmentTransaction?.replace(R.id.main_container, UserProfileFragment.newInstance())?.commit()
     }
 
+    override fun openLikesPage() {
+        Toast.makeText(context,"likes open", Toast.LENGTH_SHORT).show()
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun openInterestsPage() {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.main_container, InterestsFragment.newInstance())?.commit()    }
+
+    override fun openSettingspage() {
+        Toast.makeText(context,"settings open", Toast.LENGTH_SHORT).show()
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun openHelpAndFeedbackPage() {
+        Toast.makeText(context,"help open", Toast.LENGTH_SHORT).show()
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
         fun newInstance() = MenuFragment()

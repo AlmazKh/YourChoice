@@ -5,8 +5,9 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.itis.yourchoice.di.module.MenuModule
 import ru.itis.yourchoice.di.scope.ScreenScope
-import ru.itis.yourchoice.view.menu.InterestsFragment
+import ru.itis.yourchoice.view.menu.interests.InterestsFragment
 import ru.itis.yourchoice.view.menu.MenuFragment
+import ru.itis.yourchoice.view.menu.profile.UserProfileFragment
 
 @Subcomponent(
         modules = [
@@ -25,4 +26,5 @@ interface MenuComponent {
 
     fun inject(menuFragment: MenuFragment)
     fun inject(interestsFragment: InterestsFragment)
+    fun inject(userProfileFragment: UserProfileFragment)
 }

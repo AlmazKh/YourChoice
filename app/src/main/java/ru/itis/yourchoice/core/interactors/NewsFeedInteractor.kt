@@ -19,17 +19,17 @@ class NewsFeedInteractor
         private val userRepository: UserRepository,
         private val categoryRepository: CategoryRepository
 ) {
-    fun getPostsFromDb(): Single<List<Post>> =
+    fun getPostsFromDb(): Observable<List<Post>> =
             interestRepository.getUsersInterests()
                     .flatMap {
                         Log.d("MYLOG", "NewsFeedInteractor flatMap ")
                         postRepository.getPostsFromDb(it)
                     }
-                    .flatMap{
+                    .flatMapObservable{
                         Log.d("MYLOG3", "$it ")
                         postRepository.updatePostsListWithUserName(it)
                     }
-                   .flatMap {
+                   .flatMapSingle{
                        categoryRepository.updatePostsListWithCategory(it)
                    }
                     .subscribeOn(Schedulers.io())

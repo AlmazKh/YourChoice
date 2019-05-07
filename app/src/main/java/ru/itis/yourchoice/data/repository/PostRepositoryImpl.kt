@@ -144,8 +144,8 @@ class PostRepositoryImpl
                         }
             }
 
-    override fun updatePostsListWithUserName(posts: List<List<Post>>): Single<List<Post>> {
-        return Single.create { emitter ->
+    override fun updatePostsListWithUserName(posts: List<List<Post>>): Observable<List<Post>> {
+        return Observable.create { emitter ->
             val postsList: MutableList<Post> = mutableListOf()
             val updatedPosts: ArrayList<Post> = ArrayList()
             for (post in posts) {
@@ -162,7 +162,7 @@ class PostRepositoryImpl
                                 Log.d("MYLOG2", "post updated = $post")
                                 Log.d("MYLOG2", "list[0] updated = ${updatedPosts[0]}")
                             }
-                            emitter.onSuccess(updatedPosts)
+                            emitter.onNext(updatedPosts)
                         }
                         .addOnFailureListener { exception ->
                             emitter.onError(exception)

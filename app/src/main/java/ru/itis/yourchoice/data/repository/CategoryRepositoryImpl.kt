@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import ru.itis.yourchoice.core.interfaces.CategoryRepository
 import ru.itis.yourchoice.core.model.Category
@@ -53,22 +54,26 @@ class CategoryRepositoryImpl
         }
     }
 
-    override fun updatePostsListWithCategory(posts: List<Post>): Single<List<Post>> =
-            Single.create { emitter ->
-                val updatedPosts:ArrayList<Post> = ArrayList()
-                for (post in posts) {
-                    for(subcategory in subcategoriesHolder.getSubcategories()) {
-                        if(post.subcategory?.id == subcategory.id) {
-                            post.subcategory?.name = subcategory.name
-                            post.subcategory?.categoryId = subcategory.categoryId
-                            updatedPosts.add(post)
-                            Log.d("MYLOG", "post updated cat = $post")
-                            Log.d("MYLOG", "list[0] updated cat= ${updatedPosts[0]}")
-                        }
-                    }
+    override fun updatePostsListWithCategory(posts: List<Post>): Single<List<Post>> {
+        val updatedPosts:ArrayList<Post> = ArrayList()
+        for (post in posts) {
+            for(subcategory in subcategoriesHolder.getSubcategories()) {
+                if(post.subcategory?.id == subcategory.id) {
+                    post.subcategory?.name = subcategory.name
+                    post.subcategory?.categoryId = subcategory.categoryId
+                    updatedPosts.add(post)
+                    Log.d("MYLOG", "post updated cat = $post")
+                    Log.d("MYLOG", "list[0] updated cat= ${updatedPosts[0]}")
                 }
-                Log.d("MYLOG", "suc update category")
-                emitter.onSuccess(updatedPosts)
-                //Single.just(updatelist)
             }
+        }
+
+        return Single.just(updatedPosts)
+    }
+//            Single.create { emitter ->
+//
+//                Log.d("MYLOG", "suc update category")
+//                emitter.onSuccess(updatedPosts)
+//                //Single.just(updatelist)
+//            }
 }

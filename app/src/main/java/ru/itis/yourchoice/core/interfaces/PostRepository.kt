@@ -11,6 +11,6 @@ interface PostRepository {
     //    fun getPosts(categories: List<Category>): Single<MutableList<Post>>
     fun getPostsFromDb(interests: List<Interest>): Single<List<List<Post>>>
     fun addPostIntoDb(subcategory: Int?, postName: String, description: String): Completable
-    fun updatePostsListWithUserName(posts: List<List<Post>>): Single<List<Post>>
+    fun updatePostsListWithUserName(posts: List<List<Post>>): Observable<List<Post>>
 //    fun updatePostsListWithCategory(posts: List<Post>): Single<List<Post>>
 }

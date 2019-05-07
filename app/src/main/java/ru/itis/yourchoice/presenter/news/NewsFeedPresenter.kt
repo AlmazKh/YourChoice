@@ -18,6 +18,7 @@ private val newsFeedInteractor: NewsFeedInteractor
         .doAfterTerminate { view?.hideProgress() }
         .subscribe({
             Log.d("MYLOG", "presenter suc " + it.toString())
+
             view?.updateListView(it)
         }, {
             Log.d("MYLOG", "presen error " + it.toString())

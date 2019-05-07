@@ -6,11 +6,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_news.view.*
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.fragment_news.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.core.model.Post
 
-class NewsFeedAdapter (
+class NewsFeedAdapter(
     private val newsLambda: (Post) -> Unit
 ) : ListAdapter<Post, NewsFeedAdapter.NewsFeedViewHolder>(NewsFeedDiffCallback()) {
 
@@ -21,24 +22,22 @@ class NewsFeedAdapter (
 
     override fun onBindViewHolder(holder: NewsFeedViewHolder, position: Int) {
         //TODO: getOwnerName by Id; subcategoryName by Id
-        holder.tvPostName.text = getItem(position).postName
-        holder.tvPostDescription.text = getItem(position).description
-        holder.tvOwnerName.text = getItem(position).ownerId
-        holder.tvSubcategoryName.text = getItem(position).subcategoryId.toString()
+        holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
             newsLambda.invoke(getItem(position))
         }
+        //куда листенер
     }
 
-    class NewsFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //TODO
-//        fun bind(post: Post) {
-//
-//        }
-        val tvPostName = itemView.tv_post_name
-        val tvPostDescription = itemView.tv_post_description
-        val tvOwnerName = itemView.tv_user_name
-        val tvSubcategoryName = itemView.tv_category_name
+    class NewsFeedViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
+        LayoutContainer {
+
+        fun bind(post: Post) {
+            tv_post_name.text = post.postName
+            tv_post_description.text = post.description
+            tv_user_name.text = post.owner?.name
+            tv_category_name.text = post.subcategory?.name
+        }
     }
 
     class NewsFeedDiffCallback : DiffUtil.ItemCallback<Post>() {

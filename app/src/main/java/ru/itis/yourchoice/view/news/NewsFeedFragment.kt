@@ -61,12 +61,9 @@ class NewsFeedFragment : Fragment(), NewsFeedView {
         newsFeedPresenter.updateNewsFeed()
     }
 
-    override fun updateListView(list: MutableList<Post>) {
+    override fun updateListView(list: List<Post>) {
         newsFeedAdapter?.submitList(list)
     }
-
-    override fun addItemsToListView(list: List<Post>) {
-        newsFeedAdapter?.submitList(list)    }
 
     override fun showProgress() {
         swipeContainer.isRefreshing = true

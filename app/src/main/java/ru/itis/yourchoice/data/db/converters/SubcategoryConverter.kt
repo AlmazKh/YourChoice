@@ -10,7 +10,5 @@ class SubcategoryConverter {
 
     @TypeConverter
     fun toSubcategory(id: Int?): Subcategory =
-        Subcategory.Builder()
-            .id(id)
-            .build()
+        Subcategory(0, "", 0)
 }

@@ -2,28 +2,25 @@ package ru.itis.yourchoice.data.db
 
 import android.arch.persistence.room.*
 import io.reactivex.Single
-import ru.itis.yourchoice.core.model.Post
+import ru.itis.yourchoice.core.model.PostRemote
 
 @Dao
 interface PostDataDao {
-    @Query("SELECT * FROM post")
-    fun getAll(): Single<MutableList<Post>>
+    @Query("SELECT * FROM post_remote")
+    fun getAll(): Single<MutableList<PostRemote>>
 
-    @Query("SELECT * FROM post WHERE id = :id")
-    fun getById(id: Int): Single<Post>
-
-    @Query("DELETE FROM post")
+    @Query("DELETE FROM post_remote")
     fun nukeTable()
 
     @Insert
-    fun insert(post: Post)
+    fun insert(post: PostRemote)
 
     @Insert
-    fun insert(posts: List<Post>)
+    fun insert(posts: List<PostRemote>)
 
     @Update
-    fun update(post: Post)
+    fun update(post: PostRemote)
 
     @Delete
-    fun delete(post: Post)
+    fun delete(post: PostRemote)
 }

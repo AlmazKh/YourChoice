@@ -5,10 +5,11 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import ru.itis.yourchoice.core.model.Post
+import ru.itis.yourchoice.core.model.PostRemote
 
 private const val DB_NAME: String = "YC.db"
 
-@Database(entities = [Post::class], version = 1)
+@Database(entities = [PostRemote::class], version = 1)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDataDao(): PostDataDao
 

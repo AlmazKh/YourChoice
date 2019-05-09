@@ -10,7 +10,5 @@ class UserConverter {
 
     @TypeConverter
     fun toUser(id: String): User =
-            User.Builder()
-                .id(id)
-                .build()
+          User("", "", "", "", "", "")
 }

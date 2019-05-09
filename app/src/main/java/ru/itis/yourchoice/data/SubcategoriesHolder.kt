@@ -1,9 +1,10 @@
 package ru.itis.yourchoice.data
 
 import ru.itis.yourchoice.core.model.Subcategory
+import java.lang.Exception
 import javax.inject.Inject
 
-class SubcategoriesHolder @Inject constructor(){
+class SubcategoriesHolder @Inject constructor() {
 
     private val subcategories: MutableList<Subcategory> = mutableListOf()
 
@@ -46,4 +47,13 @@ class SubcategoriesHolder @Inject constructor(){
     }
 
     fun getSubcategories(): List<Subcategory> = subcategories
+
+    fun getSubcategoryById(id: Int): Subcategory? {
+        getSubcategories().forEach { subcategory ->
+            if (subcategory.id == id) {
+                return subcategory
+            }
+        }
+        return null
+    }
 }

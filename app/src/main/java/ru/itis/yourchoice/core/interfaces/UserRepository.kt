@@ -6,6 +6,7 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import ru.itis.yourchoice.core.model.Category
+import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.core.model.User
 
 interface UserRepository {
@@ -17,4 +18,5 @@ interface UserRepository {
     fun getCurrentUser(): FirebaseUser?
     fun checkAuthUser(): Boolean
     fun getUserFromDbById(id: String): Single<User>
+    fun updatePostsListWithUserName(posts: List<Post>): Single<List<Post>>
 }

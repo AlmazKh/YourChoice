@@ -7,11 +7,13 @@ import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.UserRepository
+import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.core.model.User
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -193,4 +195,34 @@ class UserRepositoryImpl
                     }
         }
     }
+
+    override fun updatePostsListWithUserName(posts: List<Post>): Single<List<Post>> {
+        return Single.create { emitter ->
+            db.collection(USERS)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        posts.forEach { post ->
+                            documents.filter { it.get(USER_ID).toString() == post.ownerId }
+                            documents.map {
+                                post.owner = mapDocumentToUser(it)
+                            }
+                        }
+                        emitter.onSuccess(posts)
+                    }
+                    .addOnFailureListener { exception ->
+                        emitter.onError(exception)
+                    }
+
+        }
+    }
+
+    private fun mapDocumentToUser(documentSnapshot: QueryDocumentSnapshot): User =
+            User(
+                    documentSnapshot.get(USER_ID).toString(),
+                    documentSnapshot.get(USER_NAME).toString(),
+                    documentSnapshot.get(USER_EMAIL).toString(),
+                    documentSnapshot.get(USER_PHONE).toString(),
+                    documentSnapshot.get(USER_LOCATION).toString(),
+                    documentSnapshot.get(USER_PHOTO).toString()
+            )
 }

@@ -1,6 +1,5 @@
 package ru.itis.yourchoice.presenter.menu
 
-import com.google.firebase.firestore.auth.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.itis.yourchoice.core.interactors.SettingsInteractor
 import ru.itis.yourchoice.presenter.base.BasePresenter
@@ -38,8 +37,16 @@ class SettingsPresenter
         )
     }
 
-    fun getCurrentUser(): User =
-            settingsInteractor.getCurrentUser()
-                    .observOn(AndroidSchedulers.mainThread())
-                    .subscribe({})
+    fun getCurrentUser() {
+        disposables.add(
+                settingsInteractor.getCurrentUser()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            view?.setData(it)
+                        }, {
+                            it.printStackTrace()
+                        })
+        )
+    }
+
 }

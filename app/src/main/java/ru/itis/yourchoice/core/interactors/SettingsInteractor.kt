@@ -24,5 +24,6 @@ class SettingsInteractor
                     .subscribeOn(Schedulers.io())
 
     fun getCurrentUser(): Single<User> =
-            userRepository.
+            userRepository.getCurrentUser()
+                    .subscribeOn(Schedulers.io())
 }

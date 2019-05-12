@@ -13,6 +13,7 @@ import com.google.common.collect.Iterables.toArray
 import kotlinx.android.synthetic.main.fragment_settings.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
+import ru.itis.yourchoice.core.model.User
 import ru.itis.yourchoice.presenter.menu.SettingsPresenter
 import javax.inject.Inject
 
@@ -38,9 +39,13 @@ class SettingsFragment : Fragment(), SettingsView {
         super.onViewCreated(view, savedInstanceState)
         settingsPresenter.attachView(this)
         settingsPresenter.getCurrentUser()
-        tv_user_name.text = settingsPresenter.getUserName()
-        tv_contact.text = settingsPresenter.getUserContact()
         tv_change_location.setOnClickListener { settingsPresenter.getCities() }
+    }
+
+    override fun setData(user: User) {
+        tv_user_name.text = user.name
+        tv_contact.text = user.email ?: user.phone
+        tv_location.text = user.location
     }
 
     override fun showChangeLocationDialog(cities: ArrayList<String>) {

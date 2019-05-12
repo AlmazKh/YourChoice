@@ -7,7 +7,9 @@ import ru.itis.yourchoice.di.module.MenuModule
 import ru.itis.yourchoice.di.scope.ScreenScope
 import ru.itis.yourchoice.view.menu.interests.InterestsFragment
 import ru.itis.yourchoice.view.menu.MenuFragment
+import ru.itis.yourchoice.view.menu.likes.LikesFragment
 import ru.itis.yourchoice.view.menu.profile.UserProfileFragment
+import ru.itis.yourchoice.view.menu.settings.SettingsFragment
 
 @Subcomponent(
         modules = [
@@ -27,4 +29,6 @@ interface MenuComponent {
     fun inject(menuFragment: MenuFragment)
     fun inject(interestsFragment: InterestsFragment)
     fun inject(userProfileFragment: UserProfileFragment)
+    fun inject(likesFragment: LikesFragment)
+    fun inject(settingsFragment: SettingsFragment)
 }

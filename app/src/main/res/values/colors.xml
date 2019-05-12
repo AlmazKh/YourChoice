@@ -11,5 +11,6 @@
     <color name="colorPageNameText">#000000</color>
     <color name="colorBackground">#EEEEEE</color>
     <color name="colorWhiteText">#FFFFFF</color>
+    <color name="colorRed">#D40040</color>
 
 </resources>

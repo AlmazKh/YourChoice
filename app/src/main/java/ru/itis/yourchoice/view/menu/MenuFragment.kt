@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.menu_fragment.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
 import ru.itis.yourchoice.view.menu.interests.InterestsFragment
+import ru.itis.yourchoice.view.menu.likes.LikesFragment
 import ru.itis.yourchoice.view.menu.profile.UserProfileFragment
+import ru.itis.yourchoice.view.menu.settings.SettingsFragment
 
 class MenuFragment : Fragment(), MenuFragmentView {
 
@@ -46,17 +48,18 @@ class MenuFragment : Fragment(), MenuFragmentView {
     }
 
     override fun openLikesPage() {
-        Toast.makeText(context,"likes open", Toast.LENGTH_SHORT).show()
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.main_container, LikesFragment.newInstance())?.commit()
     }
 
     override fun openInterestsPage() {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(R.id.main_container, InterestsFragment.newInstance())?.commit()    }
+        fragmentTransaction?.replace(R.id.main_container, InterestsFragment.newInstance())?.commit()
+    }
 
     override fun openSettingspage() {
-        Toast.makeText(context,"settings open", Toast.LENGTH_SHORT).show()
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.main_container, SettingsFragment.newInstance())?.commit()
     }
 
     override fun openHelpAndFeedbackPage() {

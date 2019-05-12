@@ -1,5 +1,6 @@
 package ru.itis.yourchoice.presenter.menu
 
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.itis.yourchoice.core.interactors.UserProfileInteractor
 import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.presenter.base.BasePresenter
@@ -11,6 +12,7 @@ class UserProfilePresenter(
 
     fun updateUserProfilePosts() =
             userProfileInteractor.getPosts()
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         view?.updateListView(it)
                     }, {

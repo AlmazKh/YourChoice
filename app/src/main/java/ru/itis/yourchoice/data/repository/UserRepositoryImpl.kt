@@ -1,6 +1,7 @@
 package ru.itis.yourchoice.data.repository
 
 import android.content.ContentValues
+import android.net.Uri
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.TaskExecutors
@@ -54,7 +55,8 @@ class UserRepositoryImpl
                             .observeOn(Schedulers.io())
                             .subscribe({
                                 if (!it) {
-                                    addUserToDb(acct.displayName, acct.email, null)
+                                    Log.d("URL", "${acct.photoUrl}")
+                                    addUserToDb(acct.displayName, acct.email, null, acct.photoUrl.toString())
                                 }
                             }, {
                                 Log.d("MYLOG", "err")
@@ -84,7 +86,7 @@ class UserRepositoryImpl
                                         .observeOn(Schedulers.io())
                                         .subscribe({
                                             if (!it) {
-                                                addUserToDb(userName, null, phone)
+                                                addUserToDb(userName, null, phone, null)
                                             }
                                         }, {})
                             }
@@ -132,14 +134,14 @@ class UserRepositoryImpl
 
     override fun checkAuthUser(): Boolean = firebaseAuth.currentUser != null
 
-    override fun addUserToDb(name: String?, email: String?, phone: String?) {
+    override fun addUserToDb(name: String?, email: String?, phone: String?, photo: String?) {
         val userMap = HashMap<String, Any?>()
         userMap[USER_ID] = firebaseAuth.currentUser?.uid
         userMap[USER_NAME] = name
         userMap[USER_EMAIL] = email
         userMap[USER_PHONE] = phone
         userMap[USER_LOCATION] = null
-        userMap[USER_PHOTO] = null
+        userMap[USER_PHOTO] = photo
         db.collection(USERS)
                 .add(userMap)
                 .addOnSuccessListener {
@@ -156,7 +158,7 @@ class UserRepositoryImpl
                     .addOnSuccessListener { documents ->
                         val list: ArrayList<User> = ArrayList()
                         for ((i, document) in documents.withIndex()) {
-                            list.add(document.toObject(User::class.java))
+                            list.add(mapDocumentToUser(document))
                             if (list[i].email == null) {
                                 if (list[i].phone == phone) {
                                     emitter.onSuccess(true)
@@ -184,7 +186,7 @@ class UserRepositoryImpl
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             if (document != null) {
-                                emitter.onSuccess(document.toObject(User::class.java))
+                                emitter.onSuccess(mapDocumentToUser(document))
                             } else {
                                 Log.d("MYLOG", "No such document")
                             }
@@ -202,10 +204,17 @@ class UserRepositoryImpl
                     .get()
                     .addOnSuccessListener { documents ->
                         posts.forEach { post ->
-                            documents.filter { it.get(USER_ID).toString() == post.ownerId }
+                            documents.forEach { document ->
+                                if (document.get(USER_ID).toString() == post.ownerId) {
+                                    post.owner = mapDocumentToUser(document)
+                                }
+                            }
+                            // фильтр не работает !!!!
+/*                            documents.filter { it.get(USER_ID).toString() == post.ownerId }
+                            documents.filter { document -> document.get(USER_ID).toString() == post.ownerId }
                             documents.map {
                                 post.owner = mapDocumentToUser(it)
-                            }
+                            }*/
                         }
                         emitter.onSuccess(posts)
                     }

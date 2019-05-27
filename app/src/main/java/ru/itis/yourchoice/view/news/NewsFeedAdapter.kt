@@ -6,6 +6,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_news.*
 import ru.itis.yourchoice.R
@@ -32,11 +35,26 @@ class NewsFeedAdapter(
     class NewsFeedViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
 
+        val transformation = RoundedCornersTransformation(20, 1)
+
+        val requestOptions = RequestOptions()
+            .centerCrop()
+            .transforms(transformation)
+
+        val thumbnail = Glide.with(containerView.context)
+            .load(R.drawable.image_placeholder)
+            .apply(requestOptions)
+
         fun bind(post: Post) {
             tv_post_name.text = post.postName
             tv_post_description.text = post.description
             tv_user_name.text = post.owner?.name
             tv_category_name.text = post.subcategory?.name
+            Glide.with(containerView.context)
+                .load(post.owner?.photo)
+                .apply(requestOptions)
+                .thumbnail(thumbnail)
+                .into(iv_user_avatar)
         }
     }
 

@@ -56,7 +56,7 @@ class CategoryRepositoryImpl
 
     override fun updatePostsListWithCategory(posts: List<Post>): Single<List<Post>> {
         return Single.fromCallable {
-            posts.forEach { post -> post.subcategory = subcategoriesHolder.getSubcategories().firstOrNull { it.id == post.subcategory?.id } }
+            posts.forEach { post -> post.subcategory = subcategoriesHolder.getSubcategories().firstOrNull { it.id == post.subcategoryId } }
             posts
         }
     }

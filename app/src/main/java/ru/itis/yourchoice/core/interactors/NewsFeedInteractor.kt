@@ -26,7 +26,9 @@ class NewsFeedInteractor
                     }
                     .flatMap {
                         Log.d("MYLOG3", "$it ")
-                        userRepository.updatePostsListWithUserName(it)
+                        val list = mutableListOf<Post>()
+                        it.forEach { posts -> list.addAll(posts) }
+                        userRepository.updatePostsListWithUserName(list)
                     }
                     .flatMap{
                         categoryRepository.updatePostsListWithCategory(it)

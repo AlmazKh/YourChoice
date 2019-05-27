@@ -5,7 +5,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.operators.observable.ObservableAllSingle
+import io.reactivex.internal.operators.observable.ObservableCollectSingle
+import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.PostRepository
 import ru.itis.yourchoice.core.model.Interest
 import ru.itis.yourchoice.core.model.Post
@@ -50,7 +56,18 @@ class PostRepositoryImpl
         }
     }
 
-    override fun getPostsFromDb(interests: List<Interest>): Single<List<Post>> {
+    override fun getPostsFromDb(interests: List<Interest>): Single<List<List<Post>>> {
+        return Observable.fromIterable(interests)
+            .flatMapSingle {
+                getPosts(it)
+            }
+            .concatMap {
+                Observable.just(it)
+            }
+            .toList()
+    }
+
+/*    override fun getPostsFromDb(interests: List<Interest>): Single<List<Post>> {
         return Single.fromCallable {
             val posts = mutableListOf<Post>()
             interests.forEach {
@@ -61,12 +78,13 @@ class PostRepositoryImpl
 
             posts
         }
-    }
+    }*/
 
-    private fun getPosts(interest: Interest): List<Post> {
-        // шаг первый
-        var posts = listOf<Post>()
-        db.collection(POSTS)
+    private fun getPosts(interest: Interest): Single<List<Post>> {
+        return Single.create { emitter ->
+            // шаг первый
+            var posts = listOf<Post>()
+            db.collection(POSTS)
                 .whereEqualTo(SUBCATEGORY_ID, interest.subcategoryId)
                 .get()
                 .addOnSuccessListener { documents ->
@@ -74,14 +92,16 @@ class PostRepositoryImpl
                     posts = documents.map {
                         mapDocumentToPost(it)
                     }
+                    emitter.onSuccess(posts)
                     Log.d("MYLOG", "mapped document = $posts ")
 
                 }
                 .addOnFailureListener { exception ->
                     Log.w("MYLOG", "Error getting documents: ", exception)
                 }
-        // шаг второй (возвращает пустой спиоок)
-        return posts
+        }
+//        // шаг второй (возвращает пустой спиоок)
+//        return posts
     }
 
     private fun mapDocumentToPost(documentSnapshot: QueryDocumentSnapshot): Post =

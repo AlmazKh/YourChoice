@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.view.addpost.AddPostFragment
 import ru.itis.yourchoice.view.news.NewsFeedFragment
+import ru.itis.yourchoice.view.menu.MenuFragment
 
 class MainActivity : AppCompatActivity() {
 

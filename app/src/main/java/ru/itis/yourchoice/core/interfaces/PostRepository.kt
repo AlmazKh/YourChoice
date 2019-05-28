@@ -10,4 +10,5 @@ import ru.itis.yourchoice.core.model.Post
 interface PostRepository {
     fun getPostsFromDb(interests: List<Interest>): Single<List<List<Post>>>
     fun addPostIntoDb(subcategory: Int?, postName: String, description: String): Completable
+    fun getCurrentUserPosts(): Single<List<Post>>
 }

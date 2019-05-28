@@ -8,6 +8,8 @@ import ru.itis.yourchoice.core.interfaces.PostRepository
 import ru.itis.yourchoice.core.interfaces.UserRepository
 import ru.itis.yourchoice.data.repository.CategoryRepositoryImpl
 import ru.itis.yourchoice.data.repository.InterestRepositoryImpl
+import ru.itis.yourchoice.core.interfaces.CityRepository
+import ru.itis.yourchoice.data.repository.CityRepositoryImpl
 import ru.itis.yourchoice.data.repository.PostRepositoryImpl
 import ru.itis.yourchoice.data.repository.UserRepositoryImpl
 import javax.inject.Singleton
@@ -29,4 +31,8 @@ interface RepoModule {
     @Binds
     @Singleton
     fun bindInterestRepository(interestRepositoryImpl: InterestRepositoryImpl): InterestRepository
+
+    @Binds
+    @Singleton
+    fun  bindCityRepository(cityRepositoryImpl: CityRepositoryImpl): CityRepository
 }

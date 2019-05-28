@@ -23,7 +23,6 @@ private const val POST_DESCRIPTION = "description"
 private const val OWNER_ID = "owner_id"
 private const val POSTS = "posts"
 
-
 /*  CATEGORY_ID can be:
     1 = films
     2 = series
@@ -100,8 +99,27 @@ class PostRepositoryImpl
                     Log.w("MYLOG", "Error getting documents: ", exception)
                 }
         }
-//        // шаг второй (возвращает пустой спиоок)
-//        return posts
+    }
+
+    override fun getCurrentUserPosts(): Single<List<Post>> {
+        return Single.create { emitter ->
+            db.collection(POSTS)
+                    .whereEqualTo(OWNER_ID, firebaseAuth.currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        var list: ArrayList<Post> = ArrayList()
+                        for (document in documents) {
+                            list.add(document.toObject(Post::class.java))
+                            Log.d("MYLOG", "PostRepo getCurrentUserPosts ${document.id} => ${document.data}")
+                            Log.d("MYLOG", "list[0] = ${list[0]}")
+                        }
+                        emitter.onSuccess(list)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("MYLOG", "Error getting documents: ", exception)
+                        emitter.onError(exception)
+                    }
+        }
     }
 
     private fun mapDocumentToPost(documentSnapshot: QueryDocumentSnapshot): Post =

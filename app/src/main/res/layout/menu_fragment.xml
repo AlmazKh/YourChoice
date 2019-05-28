@@ -1,20 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/const_layout_menu"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
 
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+    <RelativeLayout
+        android:id="@+id/relativeLayout_profile"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_user_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/iv_user_avatar"
+            android:text="TextView"
+            android:textColor="@color/colorMain"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_user_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_card_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_user_name"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/iv_user_avatar"
+            android:text="@string/view_profile"
+            android:textColor="@color/colorHiddenText"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_user_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/liner_layout_menu"
+        android:layout_width="344dp"
+        android:layout_height="544dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout_profile">
+
+        <TextView
+            android:id="@+id/tv_likes"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:clickable="true"
+            android:drawableStart="@drawable/ic_likes"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="@string/likes"
+            android:textColor="@color/colorPageNameText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_interests"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:drawableStart="@drawable/ic_interests"
+            android:gravity="center_vertical"
+            android:text="@string/interests"
+            android:textColor="@color/colorPageNameText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_settings"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:drawableStart="@drawable/ic_settings"
+            android:gravity="center_vertical"
+            android:text="@string/settings"
+            android:textColor="@color/colorPageNameText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_help_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:drawableStart="@drawable/ic_help"
+            android:gravity="center_vertical"
+            android:text="@string/help_and_feedback"
+            android:textColor="@color/colorPageNameText"
+            android:textSize="18sp" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

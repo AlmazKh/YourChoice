@@ -18,4 +18,5 @@ interface AppComponent {
     fun authComponent(): AuthComponent.Builder
     fun appPostComponent(): AddPostComponent.Builder
     fun newsFeedComponent(): NewsFeedComponent.Builder
+    fun menuComponent(): MenuComponent.Builder
 }

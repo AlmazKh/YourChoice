@@ -6,7 +6,10 @@ import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import io.reactivex.Completable
@@ -130,7 +133,22 @@ class UserRepositoryImpl
         }
     }
 
-    override fun getCurrentUser(): Single<FirebaseUser?> = Single.just(firebaseAuth.currentUser)
+    override fun getCurrentUser(): Single<User> {
+        return Single.create { emitter ->
+            db.collection(USERS)
+                    .whereEqualTo(USER_ID, firebaseAuth.currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            emitter.onSuccess(mapDocumentToUser(document))
+
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        emitter.onError(exception)
+                    }
+        }
+    }
 
     override fun checkAuthUser(): Single<Boolean> = Single.just(firebaseAuth.currentUser != null)
 
@@ -190,6 +208,45 @@ class UserRepositoryImpl
                             } else {
                                 Log.d("MYLOG", "No such document")
                             }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        emitter.onError(exception)
+                    }
+        }
+    }
+
+    override fun setUsersCity(id: Int): Completable =
+            getDocumentId()
+                    .flatMapCompletable {
+                        setUsersCityIntoDb(id, it)
+                    }
+
+    private fun getDocumentId(): Single<String> {
+        return Single.create { emitter ->
+            db.collection(USERS)
+                    .whereEqualTo(USER_ID, firebaseAuth.currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            emitter.onSuccess(document.id)
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        emitter.onError(exception)
+                    }
+        }
+    }
+
+    private fun setUsersCityIntoDb(cityId: Int, docId: String): Completable {
+        return Completable.create { emitter ->
+            db.collection(USERS).document(docId)
+                    .update(USER_LOCATION, cityId)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            emitter.onError(task.exception ?: Exception(""))
                         }
                     }
                     .addOnFailureListener { exception ->

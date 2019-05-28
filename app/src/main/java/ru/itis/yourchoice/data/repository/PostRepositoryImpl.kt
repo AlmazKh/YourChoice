@@ -6,7 +6,6 @@ import io.reactivex.Completable
 import ru.itis.yourchoice.core.interfaces.PostRepository
 import javax.inject.Inject
 
-private const val CATEGORY_ID = "category_id"
 private const val SUBCATEGORY_ID = "subcategory_id"
 private const val POST_NAME = "name"
 private const val POST_DESCRIPTION = "description"
@@ -24,9 +23,9 @@ class PostRepositoryImpl
     private val firebaseAuth: FirebaseAuth,
     private val db: FirebaseFirestore
 ): PostRepository {
-    override fun addPostIntoDb(category: Int, subcategory: String, postName: String, description: String) : Completable {
+    
+    override fun addPostIntoDb(subcategory: Int, postName: String, description: String) : Completable {
         val postMap = HashMap<String, Any?>()
-        postMap[CATEGORY_ID] = category
         postMap[SUBCATEGORY_ID] = subcategory
         postMap[POST_NAME] = postName
         postMap[POST_DESCRIPTION] = description

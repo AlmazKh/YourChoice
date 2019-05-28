@@ -17,7 +17,6 @@ class LoginInteractor
         userRepository.loginWithGoogle(acct)
             .subscribeOn(Schedulers.io())
 
-
     fun loginWithPhone(storedVerificationId: String, verificationCode: String, userName: String, phone: String): Completable {
         return userRepository.loginWithPhone(storedVerificationId, verificationCode, userName, phone)
             .subscribeOn(Schedulers.io())

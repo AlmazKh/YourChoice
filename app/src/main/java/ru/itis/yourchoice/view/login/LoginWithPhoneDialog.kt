@@ -61,18 +61,12 @@ class LoginWithPhoneDialog : DialogFragment(), LoginWithPhoneView {
     }
 
     override fun codeIsSending() {
-        Toast.makeText(
-                activity,
-                R.string.verify_code_sending, Toast.LENGTH_LONG
-        ).show()
+        Toast.makeText(activity, R.string.verify_code_sending, Toast.LENGTH_LONG).show()
     }
 
     override fun showError(errorText: String) {
         Log.d("MYLOG", errorText)
-        Toast.makeText(
-                activity,
-                errorText, Toast.LENGTH_LONG
-        ).show()
+        Toast.makeText(activity, errorText, Toast.LENGTH_LONG).show()
     }
 
     override fun showErrorPhoneNumberFormat() {

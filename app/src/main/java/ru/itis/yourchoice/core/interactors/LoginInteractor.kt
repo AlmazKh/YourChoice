@@ -3,6 +3,7 @@ package ru.itis.yourchoice.core.interactors
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.UserRepository
 import javax.inject.Inject
@@ -25,5 +26,7 @@ class LoginInteractor
         userRepository.sendVerificationCode(phoneNumber)
             .subscribeOn(Schedulers.io())
 
-    fun checkAuthUser(): Boolean = userRepository.checkAuthUser()
+    fun checkAuthUser(): Single<Boolean> =
+            userRepository.checkAuthUser()
+                    .subscribeOn(Schedulers.io())
 }

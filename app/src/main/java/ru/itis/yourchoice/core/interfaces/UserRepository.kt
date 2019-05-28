@@ -16,8 +16,8 @@ interface UserRepository {
     fun sendVerificationCode(phoneNumber: String): Maybe<String>
     fun addUserToDb(name: String?, email: String?, phone: String?, photo: String?)
     fun searchUserInDb(email: String?, phone: String?): Single<Boolean>
-    fun getCurrentUser(): FirebaseUser?
-    fun checkAuthUser(): Boolean
     fun getUserFromDbById(id: String): Single<User>
     fun updatePostsListWithUserName(posts: List<Post>): Single<List<Post>>
+    fun getCurrentUser(): Single<FirebaseUser?>
+    fun checkAuthUser(): Single<Boolean>
 }

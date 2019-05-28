@@ -15,8 +15,8 @@ import ru.itis.yourchoice.view.login.LoginActivity
 import ru.itis.yourchoice.view.login.LoginView
 
 class LoginActivityPresenter(
-    private val loginInteractor: LoginInteractor,
-    private val googleSignInClient: GoogleSignInClient
+        private val loginInteractor: LoginInteractor,
+        private val googleSignInClient: GoogleSignInClient
 ) : BasePresenter<LoginView>(), GoogleApiClient.OnConnectionFailedListener {
 
     fun onGoogleSignInClick(activity: LoginActivity) {
@@ -32,14 +32,14 @@ class LoginActivityPresenter(
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.d("MYLOG", acct.photoUrl.toString())
         disposables.add(
-            loginInteractor.loginWithGoogle(acct)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    view?.signInSuccess()
-                }, {
-                    view?.showError(it.message ?: "Login error")
-                    it.printStackTrace()
-                })
+                loginInteractor.loginWithGoogle(acct)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            view?.signInSuccess()
+                        }, {
+                            view?.showError(it.message ?: "Login error")
+                            it.printStackTrace()
+                        })
         )
     }
 
@@ -57,9 +57,17 @@ class LoginActivityPresenter(
     }
 
     fun checkAuthUser() {
-        if(loginInteractor.checkAuthUser()) {
-            view?.signInSuccess()
-        }
+        disposables.add(
+                loginInteractor.checkAuthUser()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            if (it) {
+                                view?.signInSuccess()
+                            }
+                        }, {
+                            it.printStackTrace()
+                        })
+        )
     }
 
     fun onPhoneSignInClick() {

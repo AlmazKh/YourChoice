@@ -1,6 +1,5 @@
 package ru.itis.yourchoice.core.interactors
 
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.itis.yourchoice.core.interfaces.CityRepository
@@ -19,8 +18,11 @@ class SettingsInteractor
             cityRepository.getCities()
                     .subscribeOn(Schedulers.io())
 
-    fun setUsersCity(id: Int): Completable =
+    fun setUsersCity(id: Int): Single<City> =
             userRepository.setUsersCity(id)
+                    .flatMap {
+                        cityRepository.getCityById(id)
+                    }
                     .subscribeOn(Schedulers.io())
 
     fun getCurrentUser(): Single<User> =

@@ -13,6 +13,7 @@ import com.google.common.collect.Iterables.toArray
 import kotlinx.android.synthetic.main.fragment_settings.*
 import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
+import ru.itis.yourchoice.core.model.City
 import ru.itis.yourchoice.core.model.User
 import ru.itis.yourchoice.presenter.menu.SettingsPresenter
 import javax.inject.Inject
@@ -43,7 +44,7 @@ class SettingsFragment : Fragment(), SettingsView {
     }
 
     override fun setData(user: User) {
-        tv_user_name.text = user.name
+        tv_user_name_settings.text = user.name
         tv_contact.text = user.email ?: user.phone
         tv_location.text = user.location
     }
@@ -62,7 +63,8 @@ class SettingsFragment : Fragment(), SettingsView {
         builder.show()
     }
 
-    override fun showSuccess(message: String) {
+    override fun showSuccess(message: String, city: City) {
+        tv_location.text = city.name
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 

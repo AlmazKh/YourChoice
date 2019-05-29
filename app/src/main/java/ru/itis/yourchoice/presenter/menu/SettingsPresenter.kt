@@ -30,7 +30,7 @@ class SettingsPresenter
                 settingsInteractor.setUsersCity(id)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            view?.showSuccess("Location has changed")
+                            view?.showSuccess("Location has changed", it)
                         }, {
                             it.printStackTrace()
                         })

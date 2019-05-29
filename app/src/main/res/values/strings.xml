@@ -23,6 +23,7 @@
     <string name="title_news">News</string>
     <string name="title_addpost">Add post</string>
     <string name="title_menu">Menu</string>
+    <string name="title_feedback">Help&amp;Feedback</string>
 
     <string name="get_verification_code">Get verification code</string>
     <string name="phone_hint">+78005553535</string>

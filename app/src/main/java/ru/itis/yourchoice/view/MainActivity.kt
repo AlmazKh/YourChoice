@@ -8,6 +8,7 @@ import ru.itis.yourchoice.R
 import ru.itis.yourchoice.view.addpost.AddPostFragment
 import ru.itis.yourchoice.view.news.NewsFeedFragment
 import ru.itis.yourchoice.view.menu.MenuFragment
+import ru.itis.yourchoice.view.news.PostFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,5 +43,28 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false);
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    fun navigateTo(fragment: String, arguments: Bundle?) {
+        val transaction =
+                supportFragmentManager.beginTransaction()
+        when (fragment) {
+            PostFragment.toString() -> {
+                transaction.replace(
+                        R.id.main_container,
+                        PostFragment.newInstance(arguments)
+                )
+            }
+        }
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

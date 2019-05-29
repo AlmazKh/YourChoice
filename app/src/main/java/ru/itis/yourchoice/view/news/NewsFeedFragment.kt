@@ -11,7 +11,10 @@ import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
 import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.presenter.news.NewsFeedPresenter
+import ru.itis.yourchoice.view.MainActivity
 import javax.inject.Inject
+
+const val POST_KEY = "post"
 
 class NewsFeedFragment : Fragment(), NewsFeedView {
 
@@ -73,12 +76,17 @@ class NewsFeedFragment : Fragment(), NewsFeedView {
         swipeContainer.isRefreshing = false
     }
 
+
     override fun navigateToDetails(post: Post) {
-        // TODO replace fragment with one news
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.main_container, PostFragment.newInstance())
-        transaction?.addToBackStack(null)
-        transaction?.commitAllowingStateLoss()
+        val postBundle = Bundle()
+        postBundle.putParcelable(POST_KEY, post)
+        (activity as MainActivity).navigateTo(PostFragment.toString(), postBundle)
+        /*     // TODO replace fragment with one news
+             val transaction = activity?.supportFragmentManager?.beginTransaction()
+             transaction?.replace(R.id.main_container, PostFragment.newInstance())
+             transaction?.addToBackStack(null)
+             transaction?.commitAllowingStateLoss()
+             transaction?.commitAllowingStateLoss()*/
     }
 
     private fun refreshNewsFeed() {

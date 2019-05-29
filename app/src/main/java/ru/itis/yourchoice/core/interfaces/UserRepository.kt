@@ -18,6 +18,6 @@ interface UserRepository {
     fun getUserFromDbById(id: String): Single<User>
     fun updatePostsListWithUserName(posts: List<Post>): Single<List<Post>>
     fun checkAuthUser(): Single<Boolean>
-    fun setUsersCity(id: Int): Completable
+    fun setUsersCity(id: Int): Single<Int>
     fun getCurrentUser(): Single<User>
 }

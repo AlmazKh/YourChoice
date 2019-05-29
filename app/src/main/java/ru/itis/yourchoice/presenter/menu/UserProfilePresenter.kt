@@ -23,5 +23,15 @@ class UserProfilePresenter(
 
     }
 
+    fun updateUserInfo() {
+        userProfileInteractor.getUserInfo()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    view?.updateUserInfo(it)
+                }, {
+
+                })
+    }
+
     fun onPostClick(post: Post) = view?.navigateToDetails(post)
 }

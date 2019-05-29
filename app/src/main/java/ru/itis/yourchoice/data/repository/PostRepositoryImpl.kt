@@ -107,12 +107,8 @@ class PostRepositoryImpl
                     .whereEqualTo(OWNER_ID, firebaseAuth.currentUser?.uid)
                     .get()
                     .addOnSuccessListener { documents ->
-                        var list: ArrayList<Post> = ArrayList()
-                        for (document in documents) {
-                            list.add(document.toObject(Post::class.java))
-                            Log.d("MYLOG", "PostRepo getCurrentUserPosts ${document.id} => ${document.data}")
-                            Log.d("MYLOG", "list[0] = ${list[0]}")
-                        }
+                        val list = mutableListOf<Post>()
+                        documents.forEach { document -> list.add(mapDocumentToPost(document))}
                         emitter.onSuccess(list)
                     }
                     .addOnFailureListener { exception ->

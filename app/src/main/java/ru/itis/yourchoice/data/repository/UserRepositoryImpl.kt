@@ -141,7 +141,6 @@ class UserRepositoryImpl
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             emitter.onSuccess(mapDocumentToUser(document))
-
                         }
                     }
                     .addOnFailureListener { exception ->
@@ -216,9 +215,9 @@ class UserRepositoryImpl
         }
     }
 
-    override fun setUsersCity(id: Int): Completable =
+    override fun setUsersCity(id: Int): Single<Int> =
             getDocumentId()
-                    .flatMapCompletable {
+                    .flatMap {
                         setUsersCityIntoDb(id, it)
                     }
 
@@ -238,13 +237,13 @@ class UserRepositoryImpl
         }
     }
 
-    private fun setUsersCityIntoDb(cityId: Int, docId: String): Completable {
-        return Completable.create { emitter ->
+    private fun setUsersCityIntoDb(cityId: Int, docId: String): Single<Int> {
+        return Single.create { emitter ->
             db.collection(USERS).document(docId)
                     .update(USER_LOCATION, cityId)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            emitter.onComplete()
+                            emitter.onSuccess(cityId)
                         } else {
                             emitter.onError(task.exception ?: Exception(""))
                         }

@@ -20,6 +20,12 @@ class CategoryRepositoryImpl
     private val subcategoriesHolder: SubcategoriesHolder
 ): CategoryRepository {
 
+    override fun getSubcategoryById(id: Int): Single<Subcategory> {
+        return Single.create {emitter ->
+            subcategoriesHolder.getSubcategories().forEach { if (it.id == id ){emitter.onSuccess(it)}}
+        }
+    }
+
     override fun getCategories(): Single<List<Category>> = Single.just(categoriesHolder.getCategories())
 
     override fun getSubcategories(category: Int): Single<List<Subcategory>> {

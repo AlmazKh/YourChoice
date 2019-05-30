@@ -3,6 +3,7 @@ package ru.itis.yourchoice.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import io.reactivex.Completable
 import io.reactivex.Single
 import ru.itis.yourchoice.core.interfaces.InterestRepository
 import ru.itis.yourchoice.core.model.Interest
@@ -33,6 +34,62 @@ class InterestRepositoryImpl
                         emitter.onError(exception)
                     }
         }
+    }
+
+    override fun checkInterest(subcategoryId: Int): Single<Boolean> {
+        return Single.create { emitter ->
+            db.collection(INTERESTS)
+                    .whereEqualTo(OWNER_ID, firebaseAuth.currentUser?.uid)
+                    .whereEqualTo(SUBCATEGORY_ID, subcategoryId)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        if (documents == null) {
+                            emitter.onSuccess(false)
+                        } else {
+                            emitter.onSuccess(true)
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        emitter.onError(exception)
+                    }
+        }
+    }
+
+    override fun addInterest(subcategoryId: Int): Completable {
+        val interestMap = HashMap<String, Any?>()
+        interestMap[SUBCATEGORY_ID] = subcategoryId
+        interestMap[OWNER_ID] = firebaseAuth.currentUser?.uid
+        return Completable.create { emitter ->
+            db.collection(INTERESTS)
+                    .add(interestMap)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            emitter.onError(task.exception ?: Exception(""))
+                        }
+                    }
+        }
+    }
+
+    override fun getDocumentId(subcategoryId: Int): Single<String> {
+        return Single.create { emitter ->
+            db.collection(INTERESTS)
+                    .whereEqualTo(OWNER_ID, firebaseAuth.currentUser?.uid)
+                    .whereEqualTo(SUBCATEGORY_ID, subcategoryId)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        documents.forEach { emitter.onSuccess(it.id) }
+                    }
+        }
+    }
+
+    override fun deleteInterest(docId: String): Completable {
+       return Completable.create { emitter ->
+           db.collection(INTERESTS).document(docId)
+                   .delete()
+                   .addOnSuccessListener { emitter.onComplete() }
+       }
     }
 
     private fun mapDocumetToInterest(documentSnapshot: QueryDocumentSnapshot): Interest =

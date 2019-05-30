@@ -7,6 +7,7 @@ import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.core.model.Subcategory
 
 interface CategoryRepository {
+    fun getSubcategoryById(id: Int): Single<Subcategory>
     fun getSubcategories(category: Int): Single<List<Subcategory>>
     fun getCategories(): Single<List<Category>>
     fun getCategoryByName(name: String): Single<Category>

@@ -23,6 +23,7 @@
     <string name="title_news">News</string>
     <string name="title_addpost">Add post</string>
     <string name="title_menu">Menu</string>
+    <string name="title_feedback">Help&amp;Feedback</string>
 
     <string name="get_verification_code">Get verification code</string>
     <string name="phone_hint">+78005553535</string>
@@ -36,5 +37,10 @@
     <string name="post_name_hint">Post name</string>
     <string name="err_fill_all_fields">Please, fill in all the fields</string>
     <string name="post_add_success">Post added successful</string>
+    <string name="view_profile">View profile</string>
+    <string name="likes">Likes</string>
+    <string name="interests">Interests</string>
+    <string name="settings">Settings</string>
+    <string name="help_and_feedback"><![CDATA[Help&Feedback]]></string>
 
 </resources>

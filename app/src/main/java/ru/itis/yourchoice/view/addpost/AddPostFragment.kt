@@ -53,6 +53,7 @@ class AddPostFragment : Fragment(), AddPostView {
                     showFieldsFillError()
                 } else {
                     addPostPresenter.addPost(
+                            select_category_spinner.selectedItem.toString(),
                             select_subcategory_spinner.selectedItem.toString(),
                             et_post_name.text.toString(),
                             et_description.text.toString()

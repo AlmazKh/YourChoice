@@ -4,9 +4,11 @@ import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import ru.itis.yourchoice.core.interfaces.CategoryRepository
 import ru.itis.yourchoice.core.model.Category
+import ru.itis.yourchoice.core.model.Post
 import ru.itis.yourchoice.core.model.Subcategory
 import ru.itis.yourchoice.data.CategoriesHolder
 import ru.itis.yourchoice.data.SubcategoriesHolder
@@ -17,6 +19,12 @@ class CategoryRepositoryImpl
     private val categoriesHolder: CategoriesHolder,
     private val subcategoriesHolder: SubcategoriesHolder
 ): CategoryRepository {
+
+    override fun getSubcategoryById(id: Int): Single<Subcategory> {
+        return Single.create {emitter ->
+            subcategoriesHolder.getSubcategories().forEach { if (it.id == id ){emitter.onSuccess(it)}}
+        }
+    }
 
     override fun getCategories(): Single<List<Category>> = Single.just(categoriesHolder.getCategories())
 
@@ -32,7 +40,7 @@ class CategoryRepositoryImpl
         }
     }
 
-    override fun getCategoryIdByName(name: String): Single<Category> {
+    override fun getCategoryByName(name: String): Single<Category> {
         return Single.create{ emitter ->
             for(category in categoriesHolder.getCategories()) {
                 if(category.name == name) {
@@ -42,13 +50,20 @@ class CategoryRepositoryImpl
         }
     }
 
-    override fun getSubategoryIdByName(name: String): Single<Subcategory> {
+    override fun getSubategoryByNameAndCategoryId(name: String, categoryId: Int): Single<Subcategory> {
         return Single.create{ emitter ->
             for(subcategory in subcategoriesHolder.getSubcategories()) {
-                if(subcategory.name == name) {
+                if(subcategory.name == name && subcategory.categoryId == categoryId) {
                     emitter.onSuccess(subcategory)
                 }
             }
+        }
+    }
+
+    override fun updatePostsListWithCategory(posts: List<Post>): Single<List<Post>> {
+        return Single.fromCallable {
+            posts.forEach { post -> post.subcategory = subcategoriesHolder.getSubcategories().firstOrNull { it.id == post.subcategoryId } }
+            posts
         }
     }
 }

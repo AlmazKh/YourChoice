@@ -7,6 +7,7 @@ import ru.itis.yourchoice.di.module.MenuModule
 import ru.itis.yourchoice.di.scope.ScreenScope
 import ru.itis.yourchoice.view.menu.interests.InterestsFragment
 import ru.itis.yourchoice.view.menu.MenuFragment
+import ru.itis.yourchoice.view.menu.gpay.GPayFragment
 import ru.itis.yourchoice.view.menu.help.HelpFragment
 import ru.itis.yourchoice.view.menu.likes.LikesFragment
 import ru.itis.yourchoice.view.menu.profile.UserProfileFragment
@@ -33,4 +34,5 @@ interface MenuComponent {
     fun inject(likesFragment: LikesFragment)
     fun inject(settingsFragment: SettingsFragment)
     fun inject(helpFragment: HelpFragment)
+    fun inject(gPayFragment: GPayFragment)
 }

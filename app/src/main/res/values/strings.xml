@@ -13,6 +13,8 @@
     <string name="err_verify_code">Error! Get code first, then write into the field</string>
     <string name="err_phones_mismatch">Stored and wited phone numbers mismatch</string>
 
+    <string name="googlepay_button_content_description">Google Pay</string>
+
 
     <string name="web_client_id">290055398849-tnkdl4feh96242qb8189omeb1808o16l.apps.googleusercontent.com</string>
     <string name="facebook_app_id">410577849737392</string>

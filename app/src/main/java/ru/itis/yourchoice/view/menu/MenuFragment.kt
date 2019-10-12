@@ -16,6 +16,7 @@ import ru.itis.yourchoice.R
 import ru.itis.yourchoice.YourChoiceApp
 import ru.itis.yourchoice.core.model.User
 import ru.itis.yourchoice.presenter.menu.MenuPresenter
+import ru.itis.yourchoice.view.menu.gpay.GPayFragment
 import ru.itis.yourchoice.view.menu.help.HelpFragment
 import ru.itis.yourchoice.view.menu.interests.InterestsFragment
 import ru.itis.yourchoice.view.menu.likes.LikesFragment
@@ -97,6 +98,10 @@ class MenuFragment : Fragment(), MenuFragmentView {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
         fragmentTransaction?.replace(R.id.main_container, HelpFragment.newInstance())?.commit()
     }
+
+    override fun openGPayPage() {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.main_container, GPayFragment.newInstance())?.commit()    }
 
     override fun onDestroyView() {
         super.onDestroyView()

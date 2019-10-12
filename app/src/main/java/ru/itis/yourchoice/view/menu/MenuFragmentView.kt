@@ -9,4 +9,5 @@ interface MenuFragmentView {
     fun openSettingsPage()
     fun openHelpAndFeedbackPage()
     fun updateUserInfo(user: User)
+    fun openGPayPage()
 }

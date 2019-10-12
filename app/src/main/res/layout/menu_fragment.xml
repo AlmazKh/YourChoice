@@ -118,5 +118,18 @@
             android:drawablePadding="16dp"
             android:textColor="@color/colorPageNameText"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_gpay"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:drawableStart="@drawable/ic_likes"
+            android:gravity="center_vertical"
+            android:text="@string/googlepay_button_content_description"
+            android:drawablePadding="16dp"
+            android:textColor="@color/colorPageNameText"
+            android:textSize="18sp" />
+
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

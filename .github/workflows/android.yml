@@ -44,7 +44,7 @@ jobs:
      - name: Make Gradle executable
        run: chmod +x ./gradlew
      - name: Test
-       uses: skx/github-action-tester@master
+       uses: AlmazKh/YourChoice@master
        with:
-        script: .github/fast-tests.sh
+        path: https://github.com/AlmazKh/YourChoice/blob/master/app/src/test/java/ru/itis/yourchoice/ExampleUnitTest.kt
         
